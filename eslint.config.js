@@ -43,7 +43,7 @@ export default [
           vars: 'all',
           args: 'after-used',
           argsIgnorePattern: '^_',
-          varsIgnorePattern: 'Ignore$',
+          varsIgnorePattern: '^_',
         },
       ],
       '@typescript-eslint/no-unsafe-argument': 'off',

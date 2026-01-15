@@ -1,3 +1,7 @@
+import { Logger } from './logger.ts';
+
+const logger = new Logger('exception');
+
 export enum ErrorCategory {
   NETWORK = 'NETWORK',
   DATABASE = 'DATABASE',
@@ -338,10 +342,6 @@ export class SidekickPlatformError extends Error {
   }
 }
 
-// ============================================================================
-// Error Details Extraction
-// ============================================================================
-
 export const getErrorDetails = (error: unknown, context?: Partial<ErrorContext>): ErrorDetails => {
   // Already a SidekickPlatformError - just add context if needed
   if (SidekickPlatformError.isInstance(error)) {
@@ -453,4 +453,18 @@ export const wrapSidekickError = (
     retryable: details.retryable,
     httpStatus: details.httpStatus,
   });
+};
+
+export const serverShutdown = (signal: string) => {
+  logger.debug(`Received ${signal}. Shutting down gracefully...`);
+
+  try {
+    logger.info('Cleanup completed');
+    process.exit(0);
+  } catch (error) {
+    const sidekickError = SidekickPlatformError.internal('Error during shutdown');
+
+    logger.error(error, sidekickError);
+    process.exit(1);
+  }
 };
