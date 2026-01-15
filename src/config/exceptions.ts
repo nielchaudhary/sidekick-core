@@ -1,6 +1,7 @@
 export enum ErrorCategory {
   NETWORK = 'NETWORK',
   DATABASE = 'DATABASE',
+  CACHE = 'CACHE',
   VALIDATION = 'VALIDATION',
   AUTHENTICATION = 'AUTHENTICATION',
   AUTHORIZATION = 'AUTHORIZATION',
@@ -117,6 +118,7 @@ const CLASSIFICATION_RULES: ClassificationRule[] = [
 
 const SEVERITY_MAP: Record<ErrorCategory, ErrorSeverity> = {
   [ErrorCategory.DATABASE]: ErrorSeverity.CRITICAL,
+  [ErrorCategory.CACHE]: ErrorSeverity.CRITICAL,
   [ErrorCategory.CONFIGURATION]: ErrorSeverity.CRITICAL,
   [ErrorCategory.AUTHENTICATION]: ErrorSeverity.HIGH,
   [ErrorCategory.AUTHORIZATION]: ErrorSeverity.HIGH,
@@ -133,6 +135,7 @@ const HTTP_STATUS_MAP: Record<ErrorCategory, number> = {
   [ErrorCategory.AUTHORIZATION]: 403,
   [ErrorCategory.NETWORK]: 503,
   [ErrorCategory.DATABASE]: 503,
+  [ErrorCategory.CACHE]: 503,
   [ErrorCategory.CONFIGURATION]: 500,
   [ErrorCategory.EXTERNAL_SERVICE]: 502,
   [ErrorCategory.INTERNAL]: 500,
@@ -281,6 +284,14 @@ export class SidekickPlatformError extends Error {
       message,
       category: ErrorCategory.VALIDATION,
       httpStatus: 400,
+      ...options,
+    });
+  }
+
+  static cache(message: string, options?: Partial<SidekickPlatformErrorOptions>) {
+    return new SidekickPlatformError({
+      message,
+      category: ErrorCategory.CACHE,
       ...options,
     });
   }
