@@ -9,8 +9,8 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc",
     "build": "pnpm run format && pnpm run format:check && pnpm run lint:check && pnpm run madge:check-build && pnpm run typecheck",
-    "dev:prod": "pnpm run build && NODE_ENV=production DEBUG=runtimelabs-beacon* tsx src/app.ts",
-    "dev": "pnpm run build && NODE_ENV=development DEBUG=runtimelabs-beacon* nodemon --watch 'src/**/*.ts' --exec 'tsx' src/app.ts",
+    "dev:prod": "pnpm run build && NODE_ENV=production DEBUG=sidekick-platform* tsx src/app.ts",
+    "dev": "pnpm run build && NODE_ENV=development DEBUG=sidekick-platform* nodemon --watch 'src/**/*.ts' --exec 'tsx' src/app.ts",
     "lint:check": "eslint .",
     "madge:check-build": "madge --circular --extensions ts src/"
   },

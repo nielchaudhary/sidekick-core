@@ -1,34 +1,34 @@
-import typescript from "@typescript-eslint/eslint-plugin";
-import typescriptParser from "@typescript-eslint/parser";
+import typescript from '@typescript-eslint/eslint-plugin';
+import typescriptParser from '@typescript-eslint/parser';
 
 export default [
   {
-    ignores: ["build/**", "node_modules/**"],
+    ignores: ['build/**', 'node_modules/**'],
   },
   {
-    files: ["**/*.ts", "**/*.tsx"],
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
-        project: "tsconfig.json",
-        sourceType: "module",
+        project: 'tsconfig.json',
+        sourceType: 'module',
       },
     },
     plugins: {
-      "@typescript-eslint": typescript,
+      '@typescript-eslint': typescript,
     },
     rules: {
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-unnecessary-type-assertion": "off",
-      "@typescript-eslint/no-floating-promises": "off",
-      "@typescript-eslint/no-misused-promises": [
-        "error",
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unnecessary-type-assertion': 'off',
+      '@typescript-eslint/no-floating-promises': 'off',
+      '@typescript-eslint/no-misused-promises': [
+        'error',
         {
           checksVoidReturn: false,
         },
       ],
-      "@typescript-eslint/restrict-template-expressions": [
-        "error",
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
         {
           allowNumber: true,
           allowBoolean: true,
@@ -37,26 +37,26 @@ export default [
           allowRegExp: true,
         },
       ],
-      "@typescript-eslint/no-unused-vars": [
-        "error",
+      '@typescript-eslint/no-unused-vars': [
+        'error',
         {
-          vars: "all",
-          args: "after-used",
-          argsIgnorePattern: "^_",
-          varsIgnorePattern: "Ignore$",
+          vars: 'all',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: 'Ignore$',
         },
       ],
-      "@typescript-eslint/no-unsafe-argument": "off",
-      curly: ["warn"],
-      "no-console": ["warn"],
-      "prefer-object-spread": ["error"],
-      "func-style": ["warn", "expression", { allowArrowFunctions: true }],
-      "array-callback-return": ["warn"],
-      "no-warning-comments": [
-        "warn",
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      curly: ['warn'],
+      'no-console': ['warn'],
+      'prefer-object-spread': ['error'],
+      'func-style': ['warn', 'expression', { allowArrowFunctions: true }],
+      'array-callback-return': ['warn'],
+      'no-warning-comments': [
+        'warn',
         {
-          terms: ["todo"],
-          location: "start",
+          terms: ['todo'],
+          location: 'start',
         },
       ],
     },

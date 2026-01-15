@@ -6,9 +6,10 @@ Stateless gateway layer for Sidekick. Owns web-facing concerns like auth, billin
 
 ## Overview
 
-This service is the entry point for all external requests to Sidekick. It handles everything *except* intelligence—retrieval, memory, reasoning, and LLM orchestration live in the separate Python service (`sidekick-core`).
+This service is the entry point for all external requests to Sidekick. It handles everything _except_ intelligence—retrieval, memory, reasoning, and LLM orchestration live in the separate Python service (`sidekick-core`).
 
 **This service owns:**
+
 - Authentication and session management
 - Billing and subscription logic
 - Third-party integrations (Notion, Google, Slack, etc.)
@@ -17,6 +18,7 @@ This service is the entry point for all external requests to Sidekick. It handle
 - API routing and request validation
 
 **This service does NOT own:**
+
 - Embedding or vector search
 - Memory storage or retrieval
 - LLM calls or reasoning chains
