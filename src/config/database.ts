@@ -33,11 +33,28 @@ class DB {
       throw SidekickPlatformError.database('Failed to connect to MongoDB');
     }
   }
+
+  public static async close(): Promise<void> {
+    try {
+      logger.info('Closing MongoDB connection...');
+      await DB.client.close();
+      logger.info('MongoDB connection closed');
+    } catch (error) {
+      logger.error('Failed to close MongoDB connection: ', getErrorDetails(error));
+      throw SidekickPlatformError.database('Failed to close MongoDB connection');
+    }
+  }
 }
 
 export const initDB = async (): Promise<void> => {
   if (!DB.client) {
     await DB.init();
+  }
+};
+
+export const closeDB = async (): Promise<void> => {
+  if (DB.client) {
+    await DB.close();
   }
 };
 
