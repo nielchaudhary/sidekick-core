@@ -66,7 +66,7 @@ export interface IUserPreferences {
   timezone?: string; // For scheduling, display
   defaultMemorySource?: MemorySource; // Where manual captures default to
   weeklyDigest: boolean; // Email preferences
-  autoSuggestDecisions: boolean; // UX preference
+  autoSuggestDecisions: boolean; // UX preference - false for MVP
 }
 
 export interface IUserIntegration {
