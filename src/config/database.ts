@@ -38,7 +38,7 @@ class DB {
     try {
       logger.info('Closing MongoDB connection...');
       await DB.client.close();
-      logger.info('MongoDB connection closed');
+      logger.info('Closed MongoDB conection...');
     } catch (error) {
       logger.error('Failed to close MongoDB connection: ', getErrorDetails(error));
       throw SidekickPlatformError.database('Failed to close MongoDB connection');
