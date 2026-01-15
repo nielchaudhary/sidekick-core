@@ -1,7 +1,3 @@
-import { Logger } from './logger.ts';
-
-const logger = new Logger('exception');
-
 export enum ErrorCategory {
   NETWORK = 'NETWORK',
   DATABASE = 'DATABASE',
@@ -453,18 +449,4 @@ export const wrapSidekickError = (
     retryable: details.retryable,
     httpStatus: details.httpStatus,
   });
-};
-
-export const serverShutdown = (signal: string) => {
-  logger.debug(`Received ${signal}. Shutting down gracefully...`);
-
-  try {
-    logger.info('Cleanup completed');
-    process.exit(0);
-  } catch (error) {
-    const sidekickError = SidekickPlatformError.internal('Error during shutdown');
-
-    logger.error(error, sidekickError);
-    process.exit(1);
-  }
 };
