@@ -1,7 +1,8 @@
 import type { NextFunction, Request, Response } from 'express';
-import type { IWaitlistDetails } from '../types.ts';
 import { Logger } from '../../../config/logger.ts';
 import { wrapSidekickError } from '../../../config/exceptions.ts';
+import { waitlistRequestSchema, type IWaitlistDetails } from '../types.ts';
+import { getDBColl, WAITLIST_COLLECTION } from '../../../config/database.ts';
 
 const logger = new Logger('addUserToWaitlistPostHandler');
 
@@ -10,17 +11,43 @@ export const addUserToWaitlistPostHandler = async (
   res: Response,
   _next: NextFunction
 ) => {
-  const {
-    name,
-    email,
-    occupation,
-    companySize = '',
-    primaryUseCase = '',
-  } = req.body as IWaitlistDetails;
-
   try {
+    const parsedWaitlistRequest = waitlistRequestSchema.safeParse(req.body);
+
+    if (!parsedWaitlistRequest.success) {
+      logger.error(`Invalid waitlist request: ${wrapSidekickError(parsedWaitlistRequest.error)}`);
+      return res.status(400).json({
+        message: 'Invalid request payload',
+      });
+    }
+
+    const {
+      name,
+      email,
+      occupation,
+      companySize = '',
+      primaryUseCase = '',
+    } = parsedWaitlistRequest.data;
+
+    const waitlistCollection = await getDBColl(WAITLIST_COLLECTION);
+
+    await waitlistCollection.insertOne({
+      name,
+      email,
+      occupation,
+      companySize,
+      primaryUseCase,
+    } as IWaitlistDetails);
+
+    return res.status(200).json({
+      success: true,
+      message: 'User Added to Waitlist Successfully',
+    });
   } catch (error) {
     logger.error(`Could not add due to : ${wrapSidekickError(error)}`);
-    return res.status(500).send('Failed to add user to waitlist, please investigate.');
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to add user to waitlist, please investigate.',
+    });
   }
 };

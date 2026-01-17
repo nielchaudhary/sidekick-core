@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export enum Occupation {
   STUDENT = 'student',
   FOUNDER = 'founder',
@@ -16,3 +18,15 @@ export interface IWaitlistDetails {
   companySize?: 'solo' | '1-10' | '11-50' | '51-200' | '200+';
   primaryUseCase?: string;
 }
+
+//zod validation schema
+
+export const waitlistRequestSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  occupation: z.string(),
+  companySize: z.string().optional(),
+  primaryUseCase: z.string().optional(),
+});
+
+export type IWaitlistReqSchema = z.infer<typeof waitlistRequestSchema>;
