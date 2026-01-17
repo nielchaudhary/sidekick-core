@@ -5,8 +5,8 @@ import { getErrorDetails, SidekickPlatformError } from './exceptions.ts';
 import { Env } from './env.ts';
 
 const logger = new Logger('redis');
-const redisUrl = Env.get('UPSTASH_REDIS_REST_URL');
-const redisToken = Env.get('UPSTASH_REDIS_REST_TOKEN');
+const redisUrl = Env.get('UPSTASH_REDIS_URL');
+const redisToken = Env.get('UPSTASH_REDIS_TOKEN');
 
 class Cache {
   public static client: Redis;
