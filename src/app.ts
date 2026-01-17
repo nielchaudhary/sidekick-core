@@ -14,12 +14,13 @@ const startSidekickPlatformServer = async (): Promise<void> => {
   logger.info('Loaded environment variables');
 
   await initDB();
-  logger.info('Database connected');
 
   await initCache();
-  logger.info('Cache connected');
 
   const sidekickPlatformServer = express();
+
+  sidekickPlatformServer.use(express.json());
+  sidekickPlatformServer.use(express.urlencoded({ extended: true }));
 
   sidekickPlatformServer.get('/health', (_, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
