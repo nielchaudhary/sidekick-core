@@ -13,6 +13,7 @@ const logger = new Logger('database');
 const mongoURI = Env.get('mongoURI');
 export const DB_NAME = 'sidekick-platform';
 export const usersCollection = 'users';
+export const waitlistCollection = 'waitlist';
 
 class DB {
   public static client: MongoClient;
