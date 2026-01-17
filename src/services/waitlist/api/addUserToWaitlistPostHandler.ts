@@ -3,6 +3,7 @@ import { Logger } from '../../../config/logger.ts';
 import { wrapSidekickError } from '../../../config/exceptions.ts';
 import { waitlistRequestSchema, type IWaitlistDetails } from '../types.ts';
 import { getDBColl, WAITLIST_COLLECTION } from '../../../config/database.ts';
+import { generateUserId } from '../../../config/predicates.ts';
 
 const logger = new Logger('addUserToWaitlistPostHandler');
 
@@ -37,6 +38,7 @@ export const addUserToWaitlistPostHandler = async (
       occupation,
       companySize,
       primaryUseCase,
+      userId: generateUserId(),
     } as IWaitlistDetails);
 
     return res.status(200).json({

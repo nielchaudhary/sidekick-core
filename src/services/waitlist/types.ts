@@ -17,6 +17,7 @@ export interface IWaitlistDetails {
   occupation: Occupation;
   companySize?: 'solo' | '1-10' | '11-50' | '51-200' | '200+';
   primaryUseCase?: string;
+  userId: string;
 }
 
 //zod validation schema
