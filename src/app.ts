@@ -4,6 +4,7 @@ import { Env } from './config/env.ts';
 import { initDB, closeDB } from './config/database.ts';
 import { initCache, closeCache } from './config/redis.ts';
 import { SidekickPlatformError, getErrorDetails } from './config/exceptions.ts';
+import { waitlistRouter } from './services/waitlist/waitlistRouterV1.ts';
 
 const logger = new Logger('platform-server');
 const PORT = Env.get('PORT') || 8090;
@@ -23,6 +24,9 @@ const startSidekickPlatformServer = async (): Promise<void> => {
   sidekickPlatformServer.get('/health', (_, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
+
+  //api routes
+  sidekickPlatformServer.use(waitlistRouter[0], waitlistRouter[1]);
 
   sidekickPlatformServer.listen(PORT, () => {
     logger.info(`Sidekick Platform LIVE ON PORT: ${PORT}`);
