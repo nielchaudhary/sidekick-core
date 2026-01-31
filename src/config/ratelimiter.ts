@@ -16,7 +16,7 @@ export class RateLimiter {
    *  - true  = request allowed
    *  - false = rate limit exceeded
    */
-  allow(): boolean {
+  allowRequest(): boolean {
     const now = Date.now();
 
     // Time passed since last refill (in seconds)
