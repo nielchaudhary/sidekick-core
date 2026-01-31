@@ -8,7 +8,8 @@ export class RateLimiter {
   private tokens = RateLimiter.CAPACITY;
 
   // Last time we refilled tokens, used to calculate how much time has passed between calls
-  private lastRefill = Date.now();
+
+  private lastRefillTime = Date.now();
 
   /**
    * Attempts to consume 1 token.
@@ -17,11 +18,11 @@ export class RateLimiter {
    *  - false = rate limit exceeded
    */
   allowRequest(): boolean {
-    const now = Date.now();
+    const currentTime = Date.now();
 
     // Time passed since last refill (in seconds)
     // Example: 250ms  - 0.25s
-    const elapsed = (now - this.lastRefill) / 1000;
+    const elapsed = (currentTime - this.lastRefillTime) / 1000;
 
     /**
      * Refill tokens proportionally based on time passed.
@@ -35,10 +36,9 @@ export class RateLimiter {
      *
      * Math.min ensures we never exceed CAPACITY.
      */
-    this.tokens = Math.min(RateLimiter.CAPACITY, this.tokens + elapsed * RateLimiter.REFILL_RATE);
-
+    this.tokens = Math.min(RateLimiter.CAPACITY, elapsed + this.tokens * RateLimiter.REFILL_RATE);
     // Update refill timestamp for next calculation
-    this.lastRefill = now;
+    this.lastRefillTime = currentTime;
 
     /**
      * If we have at least 1 token:
