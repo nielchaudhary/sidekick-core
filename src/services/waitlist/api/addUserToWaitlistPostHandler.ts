@@ -22,13 +22,7 @@ export const addUserToWaitlistPostHandler = async (
       });
     }
 
-    const {
-      name,
-      email,
-      occupation,
-      companySize = '',
-      primaryUseCase = '',
-    } = parsedWaitlistRequest.data;
+    const { name, email, occupation } = parsedWaitlistRequest.data;
 
     const waitlistCollection = await getDBColl(WAITLIST_COLLECTION);
 
