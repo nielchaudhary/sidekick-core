@@ -30,8 +30,6 @@ export const addUserToWaitlistPostHandler = async (
       name,
       email,
       occupation,
-      companySize,
-      primaryUseCase,
       userId: generateUserId(),
     } as IWaitlistDetails);
 
