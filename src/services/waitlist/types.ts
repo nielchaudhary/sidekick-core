@@ -1,14 +1,14 @@
 import { z } from 'zod';
 
 export enum Occupation {
-  STUDENT = 'student',
-  FOUNDER = 'founder',
-  ENGINEER = 'engineer',
-  DESIGNER = 'designer',
-  PRODUCT_MANAGER = 'product manager',
-  MARKETER = 'marketer',
-  SENIOR_LEADERSHIP = 'senior leadership',
-  OTHER = 'other',
+  FOUNDER_CEO = 'Founder/CEO',
+  PRODUCT = 'Product (PM/APM)',
+  ENGINEERING = 'Engineering',
+  DESIGN = 'Design',
+  OPS_STRATEGY = 'Ops/Strategy',
+  GTM_GROWTH = 'GTM/Growth',
+  INVESTING = 'Investing (VC/PE)',
+  OTHER = 'Other',
 }
 
 export interface IWaitlistDetails {
