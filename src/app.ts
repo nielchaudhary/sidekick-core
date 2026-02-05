@@ -2,7 +2,7 @@ import express from 'express';
 import { Logger } from './config/logger.ts';
 import { Env } from './config/env.ts';
 import { initDB, closeDB } from './config/database.ts';
-import { initCache, closeCache } from './config/redis.ts';
+import { closeCache } from './config/redis.ts';
 import { SidekickPlatformError, getErrorDetails } from './config/exceptions.ts';
 import { waitlistRouter } from './services/waitlist/waitlistRouterV1.ts';
 import cors from 'cors';
@@ -16,7 +16,8 @@ const startSidekickPlatformServer = async (): Promise<void> => {
 
   await initDB();
 
-  await initCache();
+  //update link and uncomment this whenever usage is required
+  // await initCache();
 
   const sidekickPlatformServer = express();
 
