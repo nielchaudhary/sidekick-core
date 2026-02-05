@@ -5,6 +5,7 @@ import { initDB, closeDB } from './config/database.ts';
 import { initCache, closeCache } from './config/redis.ts';
 import { SidekickPlatformError, getErrorDetails } from './config/exceptions.ts';
 import { waitlistRouter } from './services/waitlist/waitlistRouterV1.ts';
+import cors from 'cors';
 
 const logger = new Logger('platform-server');
 const PORT = Env.get('PORT') || 8090;
@@ -21,6 +22,7 @@ const startSidekickPlatformServer = async (): Promise<void> => {
 
   sidekickPlatformServer.use(express.json());
   sidekickPlatformServer.use(express.urlencoded({ extended: true }));
+  sidekickPlatformServer.use(cors());
 
   sidekickPlatformServer.get('/health', (_, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
