@@ -22,12 +22,11 @@ export const addUserToWaitlistPostHandler = async (
       });
     }
 
-    const { name, email, occupation } = parsedWaitlistRequest.data;
+    const { email, occupation } = parsedWaitlistRequest.data;
 
     const waitlistCollection = await getDBColl(WAITLIST_COLLECTION);
 
     await waitlistCollection.insertOne({
-      name,
       email,
       occupation,
       userId: generateUserId(),

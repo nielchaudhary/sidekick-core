@@ -12,7 +12,6 @@ export enum Occupation {
 }
 
 export interface IWaitlistDetails {
-  name: string;
   email: string;
   occupation: Occupation;
 }
@@ -20,7 +19,6 @@ export interface IWaitlistDetails {
 //zod validation schema
 
 export const waitlistRequestSchema = z.object({
-  name: z.string(),
   email: z.string().email(),
   occupation: z.string(),
 });
