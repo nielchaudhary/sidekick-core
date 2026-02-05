@@ -26,6 +26,15 @@ export const addUserToWaitlistPostHandler = async (
 
     const waitlistCollection = await getDBColl(WAITLIST_COLLECTION);
 
+    const existingUser = await waitlistCollection.findOne({ email });
+
+    if (existingUser) {
+      return res.status(200).json({
+        success: true,
+        message: 'You have already signed up for the waitlist',
+      });
+    }
+
     await waitlistCollection.insertOne({
       email,
       occupation,
