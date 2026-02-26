@@ -1,6 +1,4 @@
 import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { Logger } from './config/logger.ts';
 import { Env } from './config/env.ts';
 import { initDB, closeDB } from './config/database.ts';
@@ -22,14 +20,9 @@ const startSidekickPlatformServer = async (): Promise<void> => {
 
   const sidekickPlatformServer = express();
 
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-  const publicDir = path.join(__dirname, '..', 'public');
-
   sidekickPlatformServer.use(express.json());
   sidekickPlatformServer.use(express.urlencoded({ extended: true }));
   sidekickPlatformServer.use(cors());
-  sidekickPlatformServer.use(express.static(publicDir));
 
   sidekickPlatformServer.get('/health', (_, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
