@@ -35,10 +35,6 @@ const startSidekickPlatformServer = async (): Promise<void> => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
-  sidekickPlatformServer.get('/snake', (_req, res) => {
-    res.sendFile(path.join(publicDir, 'snake', 'index.html'));
-  });
-
   //api routes
   sidekickPlatformServer.use(waitlistRouter[0], waitlistRouter[1]);
 
