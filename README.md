@@ -26,6 +26,12 @@ This service is the entry point for all external requests to Sidekick. It handle
 
 ---
 
+## Snake Mini-Game
+
+- Start the server: `pnpm install` then `pnpm run dev` (listens on port 8090 by default).
+- Visit `http://localhost:8090/snake` to play the classic Snake loop (keyboard or on-screen controls).
+- Game logic is deterministic and covered by `node --test src/snake/logic.test.js`.
+
 ## Tech Stack
 
 - **Runtime:** Node.js

@@ -4,7 +4,7 @@
   "description": "Stateless gateway layer for Sidekick. Owns web-facing concerns like auth, billing, webhooks, OAuth flows, and integration syncs. Delegates all retrieval, memory, and reasoning operations to the Python intelligence service.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test src/snake/logic.test.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc",
