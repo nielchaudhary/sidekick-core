@@ -16,7 +16,7 @@ export const transcribeTextWithGroq = async (audioUrl: string) => {
       file: fs.createReadStream('audio.m4a'),
       model: 'whisper-large-v3',
       temperature: 0,
-      response_format: 'verbose_json',
+      response_format: 'text',
     });
 
     return groqTranscription.text;
