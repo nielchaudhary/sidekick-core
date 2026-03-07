@@ -9,8 +9,6 @@ export const openAIClient = new OpenAI({
   apiKey: OPENAI_API_KEY,
 });
 
-logger.info(`Inside OpenAI client`);
-
 export const streamText = async (prompt: string): Promise<string> => {
   try {
     const stream = await openAIClient.responses.create({
