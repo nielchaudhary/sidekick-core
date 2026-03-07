@@ -1,6 +1,6 @@
 import Debug from 'debug';
 
-const globalContext = 'sidekick-platform';
+const globalContext = 'sidekick-core';
 
 export const globalLogger = Debug(globalContext);
 

@@ -7,7 +7,7 @@ import { SidekickPlatformError, getErrorDetails } from './config/exceptions.ts';
 import { waitlistRouter } from './services/waitlist/waitlistRouterV1.ts';
 import cors from 'cors';
 
-const logger = new Logger('platform-server');
+const logger = new Logger('server');
 const PORT = Env.get('PORT') || 8090;
 
 const startSidekickPlatformServer = async (): Promise<void> => {

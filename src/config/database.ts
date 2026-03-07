@@ -11,7 +11,7 @@ dotenv.config();
 
 const logger = new Logger('database');
 const mongoURI = Env.get('mongoURI');
-export const DB_NAME = 'sidekick-platform';
+export const DB_NAME = 'sidekick-core';
 export const USERS_COLLECTION = 'users';
 export const WAITLIST_COLLECTION = 'waitlist';
 
@@ -30,7 +30,7 @@ class DB {
       DB.client = await new MongoClient(mongoURI!, { tls: true }).connect();
       DB.users = DB.client.db(DB_NAME).collection(USERS_COLLECTION);
       DB.waitlist = DB.client.db(DB_NAME).collection(WAITLIST_COLLECTION);
-      logger.info('Sidekick-Platform DB Connection Initialised');
+      logger.info('Sidekick-Core DB Connection Initialised');
     } catch (error) {
       logger.error('Failed to connect to MongoDB due to : ', getErrorDetails(error));
       throw SidekickPlatformError.database('Failed to connect to MongoDB');

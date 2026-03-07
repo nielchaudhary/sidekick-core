@@ -39,7 +39,7 @@ class Cache {
       // Verify connection
       await Cache.client.ping();
       Cache.initialized = true;
-      logger.info('Sidekick-Platform Cache Connection Initialised');
+      logger.info('Sidekick-Core Cache Connection Initialised');
     } catch (error) {
       logger.error('Failed to connect to Redis: ', getErrorDetails(error));
       throw SidekickPlatformError.cache('Failed to connect to Redis');
