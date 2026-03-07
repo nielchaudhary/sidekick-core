@@ -3,14 +3,14 @@ import type { Document as MongoDBDoc } from 'mongodb';
 import { Logger } from './logger.ts';
 import { isNullOrUndefined } from './predicates.ts';
 import { getErrorDetails, SidekickPlatformError } from './exceptions.ts';
-import { Env } from './env.ts';
+import { SidekickCoreEnv } from './env.ts';
 
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
 const logger = new Logger('database');
-const mongoURI = Env.get('mongoURI');
+const mongoURI = SidekickCoreEnv.get('mongoURI');
 export const DB_NAME = 'sidekick-core';
 export const USERS_COLLECTION = 'users';
 export const WAITLIST_COLLECTION = 'waitlist';

@@ -1,6 +1,6 @@
 import express from 'express';
 import { Logger } from './config/logger.ts';
-import { Env } from './config/env.ts';
+import { SidekickCoreEnv } from './config/env.ts';
 import { initDB, closeDB } from './config/database.ts';
 import { closeCache, initCache } from './config/redis.ts';
 import { SidekickPlatformError, getErrorDetails } from './config/exceptions.ts';
@@ -8,10 +8,10 @@ import { waitlistRouter } from './services/waitlist/waitlistRouterV1.ts';
 import cors from 'cors';
 
 const logger = new Logger('server');
-const PORT = Env.get('PORT') || 8090;
+const PORT = SidekickCoreEnv.get('PORT') || 8090;
 
 const startSidekickPlatformServer = async (): Promise<void> => {
-  Env.initEnvironmentVars();
+  SidekickCoreEnv.initEnvironmentVars();
   logger.info('Loaded environment variables');
 
   await initDB();

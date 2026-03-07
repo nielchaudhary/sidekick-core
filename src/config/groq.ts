@@ -1,10 +1,10 @@
 import fs from 'fs';
 import Groq from 'groq-sdk';
-import { Env } from './env.ts';
+import { SidekickCoreEnv } from './env.ts';
 import { Logger } from './logger.ts';
 
 const logger = new Logger('groq');
-const groq = new Groq({ apiKey: Env.get('GROQ_API_KEY') });
+const groq = new Groq({ apiKey: SidekickCoreEnv.get('GROQ_API_KEY') });
 
 export const transcribeTextWithGroq = async (audioUrl: string) => {
   //download audio - convert to m4a - check for file size - split file size - transcribe

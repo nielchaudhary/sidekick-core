@@ -1,8 +1,8 @@
 import OpenAI from 'openai';
-import { Env } from './env.ts';
+import { SidekickCoreEnv } from './env.ts';
 import { Logger } from './logger.ts';
 
-const OPENAI_API_KEY = Env.get('OPENAI_API_KEY');
+const OPENAI_API_KEY = SidekickCoreEnv.get('OPENAI_API_KEY');
 const logger = new Logger('openai-client');
 
 export const openAIClient = new OpenAI({

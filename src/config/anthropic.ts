@@ -4,7 +4,7 @@ import { Logger } from './logger.ts';
 
 const ANTHROPIC_API_KEY = SidekickCoreEnv.get('ANTHROPIC_API_KEY');
 
-const logger = new Logger('anthropic-client');
+const logger = new Logger('anthropic');
 
 const anthropicClient = new Anthropic({
   apiKey: ANTHROPIC_API_KEY,
@@ -21,6 +21,7 @@ export const streamTextUsingAnthropic = async (prompt: string): Promise<string> 
     let result = '';
 
     for await (const event of stream) {
+      logger.info('Stream event:', event);
       if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
         result += event.delta.text;
       }

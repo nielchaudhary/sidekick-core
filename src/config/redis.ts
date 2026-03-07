@@ -2,11 +2,11 @@ import { Redis } from '@upstash/redis';
 import { Logger } from './logger.ts';
 import { isNullOrUndefined } from './predicates.ts';
 import { getErrorDetails, SidekickPlatformError } from './exceptions.ts';
-import { Env } from './env.ts';
+import { SidekickCoreEnv } from './env.ts';
 
 const logger = new Logger('redis');
-const redisUrl = Env.get('UPSTASH_REDIS_URL');
-const redisToken = Env.get('UPSTASH_REDIS_TOKEN');
+const redisUrl = SidekickCoreEnv.get('UPSTASH_REDIS_URL');
+const redisToken = SidekickCoreEnv.get('UPSTASH_REDIS_TOKEN');
 
 class Cache {
   public static client: Redis;

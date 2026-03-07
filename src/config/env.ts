@@ -2,7 +2,7 @@
 import dotenv from 'dotenv';
 import { SidekickPlatformError } from './exceptions.ts';
 
-export class Env {
+export class SidekickCoreEnv {
   private static initialized = false;
 
   static require(key: string): string {
