@@ -4,12 +4,12 @@ import { Logger } from './logger.ts';
 
 const OPENAI_API_KEY = Env.get('OPENAI_API_KEY');
 
-const logger = new Logger('openai');
+const logger = new Logger('openai-client');
 export const openAIClient = new OpenAI({
   apiKey: OPENAI_API_KEY,
 });
 
-export const streamText = async (prompt: string): Promise<string> => {
+export const streamTextUsingOpenAI = async (prompt: string): Promise<string> => {
   try {
     const stream = await openAIClient.responses.create({
       model: 'gpt-5',
