@@ -11,12 +11,26 @@ export const openAIClient = new OpenAI({
 
 logger.info(`Inside OpenAI client`);
 
-// export const transcribeAudio = async (audioUrl: string) => {
-//   try {
-//     // Download audio using superagent
-//     // use openai / groq for transcription
-//   } catch (error) {
-//     logger.error('Transcription failed:', error);
-//     throw error;
-//   }
-// };
+export const streamText = async (prompt: string): Promise<string> => {
+  try {
+    const stream = await openAIClient.responses.create({
+      model: 'gpt-5',
+      input: [{ role: 'user', content: prompt }],
+      stream: true,
+    });
+
+    let result = '';
+
+    for await (const event of stream) {
+      logger.info('Stream event:', event);
+      if (event.type === 'response.output_text.delta' && event.delta) {
+        result += event.delta;
+      }
+    }
+
+    return result;
+  } catch (error) {
+    logger.error('Stream failed:', error);
+    throw error;
+  }
+};
