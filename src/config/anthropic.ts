@@ -12,7 +12,7 @@ const anthropicClient = new Anthropic({
 
 export const streamTextUsingAnthropic = async (
   prompt: string,
-  onChunk: (text: string) => void,
+  onChunk: (text: string) => void
 ): Promise<void> => {
   try {
     const stream = anthropicClient.messages.stream({
@@ -22,7 +22,6 @@ export const streamTextUsingAnthropic = async (
     });
 
     for await (const event of stream) {
-
       if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
         onChunk(event.delta.text);
       }

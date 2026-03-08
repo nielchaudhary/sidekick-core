@@ -11,7 +11,7 @@ export const openAIClient = new OpenAI({
 
 export const streamTextUsingOpenAI = async (
   prompt: string,
-  onChunk: (text: string) => void,
+  onChunk: (text: string) => void
 ): Promise<void> => {
   try {
     const stream = await openAIClient.responses.create({
@@ -21,7 +21,6 @@ export const streamTextUsingOpenAI = async (
     });
 
     for await (const event of stream) {
-
       if (event.type === 'response.output_text.delta' && event.delta) {
         onChunk(event.delta);
       }
