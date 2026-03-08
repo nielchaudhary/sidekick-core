@@ -21,15 +21,24 @@ export const streamTextPostHandler = async (req: Request, res: Response, _next: 
     });
   }
 
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+
   try {
     const streamFn =
       llmProvider === LLMProviders.OPENAI ? streamTextUsingOpenAI : streamTextUsingAnthropic;
 
-    const result = await streamFn(prompt);
+    await streamFn(prompt, (chunk: string) => {
+      res.write(`data: ${JSON.stringify({ text: chunk })}\n\n`);
+    });
 
-    return res.status(200).json({ success: true, data: result });
+    res.write('data: [DONE]\n\n');
+    res.end();
   } catch (error) {
     logger.error(error);
-    return res.status(500).json({ success: false, error: 'LLM stream failed' });
+    res.write(`data: ${JSON.stringify({ error: 'LLM stream failed' })}\n\n`);
+    res.end();
   }
 };

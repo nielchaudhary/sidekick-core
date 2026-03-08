@@ -5,6 +5,7 @@ import { initDB, closeDB } from './config/database.ts';
 import { closeCache, initCache } from './config/redis.ts';
 import { SidekickPlatformError, getErrorDetails } from './config/exceptions.ts';
 import { waitlistRouter } from './services/waitlist/waitlistRouterV1.ts';
+import { chatRouterV1 } from './services/chat/chatRouterV1.ts';
 import cors from 'cors';
 
 const logger = new Logger('server');
@@ -30,6 +31,7 @@ const startSidekickPlatformServer = async (): Promise<void> => {
 
   //api routes
   sidekickPlatformServer.use(waitlistRouter[0], waitlistRouter[1]);
+  sidekickPlatformServer.use(chatRouterV1[0], chatRouterV1[1]);
 
   sidekickPlatformServer.listen(PORT, () => {
     logger.info(`Sidekick Platform LIVE ON PORT: ${PORT}`);
