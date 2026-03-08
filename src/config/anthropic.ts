@@ -10,7 +10,10 @@ const anthropicClient = new Anthropic({
   apiKey: ANTHROPIC_API_KEY,
 });
 
-export const streamTextUsingAnthropic = async (prompt: string): Promise<string> => {
+export const streamTextUsingAnthropic = async (
+  prompt: string,
+  onChunk: (text: string) => void
+): Promise<void> => {
   try {
     const stream = anthropicClient.messages.stream({
       model: 'claude-sonnet-4-5-20250929',
@@ -18,16 +21,11 @@ export const streamTextUsingAnthropic = async (prompt: string): Promise<string> 
       messages: [{ role: 'user', content: prompt }],
     });
 
-    let result = '';
-
     for await (const event of stream) {
-      logger.info('Stream event:', event);
       if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-        result += event.delta.text;
+        onChunk(event.delta.text);
       }
     }
-
-    return result;
   } catch (error) {
     logger.error('Stream failed:', error);
     throw error;

@@ -9,7 +9,10 @@ export const openAIClient = new OpenAI({
   apiKey: OPENAI_API_KEY,
 });
 
-export const streamTextUsingOpenAI = async (prompt: string): Promise<string> => {
+export const streamTextUsingOpenAI = async (
+  prompt: string,
+  onChunk: (text: string) => void
+): Promise<void> => {
   try {
     const stream = await openAIClient.responses.create({
       model: 'gpt-5',
@@ -17,16 +20,11 @@ export const streamTextUsingOpenAI = async (prompt: string): Promise<string> => 
       stream: true,
     });
 
-    let result = '';
-
     for await (const event of stream) {
-      logger.info('Stream event:', event);
       if (event.type === 'response.output_text.delta' && event.delta) {
-        result += event.delta;
+        onChunk(event.delta);
       }
     }
-
-    return result;
   } catch (error) {
     logger.error('Stream failed:', error);
     throw error;
