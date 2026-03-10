@@ -11,12 +11,19 @@ export const openAIClient = new OpenAI({
 
 export const streamTextUsingOpenAI = async (
   prompt: string,
-  onChunk: (text: string) => void
+  onChunk: (text: string) => void,
+  systemPrompt?: string
 ): Promise<void> => {
   try {
+    const input: OpenAI.Responses.ResponseInputItem[] = [];
+    if (systemPrompt) {
+      input.push({ role: 'system', content: systemPrompt });
+    }
+    input.push({ role: 'user', content: prompt });
+
     const stream = await openAIClient.responses.create({
       model: 'gpt-5',
-      input: [{ role: 'user', content: prompt }],
+      input,
       stream: true,
     });
 

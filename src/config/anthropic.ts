@@ -12,12 +12,14 @@ const anthropicClient = new Anthropic({
 
 export const streamTextUsingAnthropic = async (
   prompt: string,
-  onChunk: (text: string) => void
+  onChunk: (text: string) => void,
+  systemPrompt?: string
 ): Promise<void> => {
   try {
     const stream = anthropicClient.messages.stream({
       model: 'claude-sonnet-4-5-20250929',
       max_tokens: 1024,
+      ...(systemPrompt && { system: systemPrompt }),
       messages: [{ role: 'user', content: prompt }],
     });
 

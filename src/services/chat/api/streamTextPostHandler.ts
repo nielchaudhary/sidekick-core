@@ -8,7 +8,7 @@ const logger = new Logger('streamTextPostHandler');
 
 export const streamTextPostHandler = async (req: Request, res: Response, _next: NextFunction) => {
   const { llmProvider } = req.query as { llmProvider: LLMProviders };
-  const { prompt } = req.body as { prompt: string };
+  const { prompt, systemPrompt } = req.body as { prompt: string; systemPrompt?: string };
 
   if (!prompt) {
     return res.status(400).json({ success: false, error: 'prompt is required' });
@@ -30,9 +30,13 @@ export const streamTextPostHandler = async (req: Request, res: Response, _next: 
     const streamFn =
       llmProvider === LLMProviders.OPENAI ? streamTextUsingOpenAI : streamTextUsingAnthropic;
 
-    await streamFn(prompt, (chunk: string) => {
-      res.write(`data: ${JSON.stringify({ text: chunk })}\n\n`);
-    });
+    await streamFn(
+      prompt,
+      (chunk: string) => {
+        res.write(`data: ${JSON.stringify({ text: chunk })}\n\n`);
+      },
+      systemPrompt
+    );
 
     res.write('data: [DONE]\n\n');
     res.end();
