@@ -1,3 +1,4 @@
+import { SIDEKICK_DEFAULT_PROMPT } from '../prompts/sidekick-default.ts';
 import Anthropic from '@anthropic-ai/sdk';
 import { SidekickCoreEnv } from './env.ts';
 import { Logger } from './logger.ts';
@@ -16,10 +17,14 @@ export const streamTextUsingAnthropic = async (
   systemPrompt?: string
 ): Promise<void> => {
   try {
+    const finalSystemPrompt = systemPrompt
+      ? `${SIDEKICK_DEFAULT_PROMPT}\n\n${systemPrompt}`
+      : SIDEKICK_DEFAULT_PROMPT;
+
     const stream = anthropicClient.messages.stream({
       model: 'claude-sonnet-4-5-20250929',
       max_tokens: 1024,
-      ...(systemPrompt && { system: systemPrompt }),
+      system: finalSystemPrompt,
       messages: [{ role: 'user', content: prompt }],
     });
 
