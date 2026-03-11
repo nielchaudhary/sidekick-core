@@ -12,7 +12,8 @@ export const openAIClient = new OpenAI({
 export const streamTextUsingOpenAI = async (
   prompt: string,
   onChunk: (text: string) => void,
-  systemPrompt?: string
+  systemPrompt?: string,
+  _onStatus?: (status: string) => void
 ): Promise<void> => {
   try {
     const input: OpenAI.Responses.ResponseInputItem[] = [];

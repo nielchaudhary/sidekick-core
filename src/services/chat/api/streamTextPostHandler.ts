@@ -35,7 +35,10 @@ export const streamTextPostHandler = async (req: Request, res: Response, _next: 
       (chunk: string) => {
         res.write(`data: ${JSON.stringify({ text: chunk })}\n\n`);
       },
-      systemPrompt
+      systemPrompt,
+      (status: string) => {
+        res.write(`data: ${JSON.stringify({ type: 'status', status })}\n\n`);
+      }
     );
 
     res.write('data: [DONE]\n\n');
