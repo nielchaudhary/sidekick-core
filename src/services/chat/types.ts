@@ -9,15 +9,22 @@ export interface IChat {
 
 export enum RoleTypes {
   USER = 'user',
-  SYSTEM = 'system',
+  ASSISTANT = 'assistant',
 }
 
 export interface IMessage {
   contentId: string;
   role: RoleTypes;
   content: string;
+  metadata?: IMessageMetadata;
   ctime: Date; //granular data on message level
   like: boolean;
   dislike: boolean;
   copied: boolean;
+}
+
+export interface IMessageMetadata {
+  liked?: boolean;
+  dislike?: boolean;
+  copied?: boolean;
 }
