@@ -2,6 +2,11 @@ import { SIDEKICK_DEFAULT_PROMPT } from '../prompts/sidekick-default.ts';
 import Anthropic from '@anthropic-ai/sdk';
 import { SidekickCoreEnv } from './env.ts';
 import { Logger } from './logger.ts';
+import {
+  AnthropicContentBlockNames,
+  AnthropicContentBlockTypes,
+  AnthropicEventTypes,
+} from './types.ts';
 
 const ANTHROPIC_API_KEY = SidekickCoreEnv.get('ANTHROPIC_API_KEY');
 
@@ -42,9 +47,9 @@ export const streamTextUsingAnthropic = async (
       if (
         !webSearchEmitted &&
         onStatus &&
-        event.type === 'content_block_start' &&
-        event.content_block.type === 'server_tool_use' &&
-        event.content_block.name === 'web_search'
+        event.type === AnthropicEventTypes.CONTENT_BLOCK_START &&
+        event.content_block.type === AnthropicContentBlockTypes.SERVER_TOOL_USE &&
+        event.content_block.name === AnthropicContentBlockNames.WEB_SEARCH
       ) {
         webSearchEmitted = true;
         onStatus('web_search_active');
