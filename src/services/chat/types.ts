@@ -2,7 +2,6 @@
 export interface IChat {
   sessionId: string;
   title: string;
-  messages: IMessage[];
   ctime: Date; //on the whole conversation level
   model: string;
 }
@@ -14,6 +13,7 @@ export enum RoleTypes {
 
 export interface IMessage {
   contentId: string;
+  sessionId: string;
   role: RoleTypes;
   content: string;
   metadata?: IMessageMetadata;
