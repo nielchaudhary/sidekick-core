@@ -9,3 +9,8 @@ export enum AnthropicContentBlockTypes {
 export enum AnthropicContentBlockNames {
   WEB_SEARCH = 'web_search',
 }
+
+export enum RoleTypes {
+  USER = 'user',
+  SIDEKICK = 'sidekick',
+}

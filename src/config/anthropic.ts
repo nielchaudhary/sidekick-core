@@ -6,6 +6,7 @@ import {
   AnthropicContentBlockNames,
   AnthropicContentBlockTypes,
   AnthropicEventTypes,
+  RoleTypes,
 } from './types.ts';
 
 const ANTHROPIC_API_KEY = SidekickCoreEnv.get('ANTHROPIC_API_KEY');
@@ -40,7 +41,7 @@ export const streamTextUsingAnthropic = async (
           max_uses: 1,
         },
       ],
-      messages: [{ role: 'user', content: prompt }],
+      messages: [{ role: RoleTypes.USER, content: prompt }],
     });
 
     for await (const event of stream) {

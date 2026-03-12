@@ -1,6 +1,7 @@
 import OpenAI from 'openai';
 import { SidekickCoreEnv } from './env.ts';
 import { Logger } from './logger.ts';
+import { RoleTypes } from './types.ts';
 
 const OPENAI_API_KEY = SidekickCoreEnv.get('OPENAI_API_KEY');
 
@@ -20,7 +21,7 @@ export const streamTextUsingOpenAI = async (
     if (systemPrompt) {
       input.push({ role: 'system', content: systemPrompt });
     }
-    input.push({ role: 'user', content: prompt });
+    input.push({ role: RoleTypes.USER, content: prompt });
 
     const stream = await openAIClient.responses.create({
       model: 'gpt-5',
