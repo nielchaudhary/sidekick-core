@@ -12,5 +12,5 @@ export enum AnthropicContentBlockNames {
 
 export enum RoleTypes {
   USER = 'user',
-  SIDEKICK = 'sidekick',
+  SYSTEM = 'system',
 }

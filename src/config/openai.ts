@@ -19,7 +19,7 @@ export const streamTextUsingOpenAI = async (
   try {
     const input: OpenAI.Responses.ResponseInputItem[] = [];
     if (systemPrompt) {
-      input.push({ role: 'system', content: systemPrompt });
+      input.push({ role: RoleTypes.SYSTEM, content: systemPrompt });
     }
     input.push({ role: RoleTypes.USER, content: prompt });
 
