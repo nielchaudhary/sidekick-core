@@ -22,14 +22,14 @@ export interface IMessage {
   content: string;
   ctime: Date; //granular data on message level
   latencyMs?: number;
-  meta?: IMessageMetadata;
+  meta: IMessageMetadata;
 }
 
 export interface IMessageMetadata {
   inputTokens: number;
   outputTokens: number;
   cost: number;
-  liked?: boolean;
-  dislike?: boolean;
-  copied?: boolean;
+  liked: boolean;
+  dislike: boolean;
+  copied: boolean;
 }
