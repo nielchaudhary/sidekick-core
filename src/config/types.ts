@@ -1,5 +1,6 @@
 export enum AnthropicEventTypes {
   CONTENT_BLOCK_START = 'content_block_start',
+  CONTENT_BLOCK_DELTA = 'content_block_delta',
 }
 
 export enum AnthropicContentBlockTypes {

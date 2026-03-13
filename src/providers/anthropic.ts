@@ -1,5 +1,6 @@
-import { SIDEKICK_DEFAULT_PROMPT } from '../prompts/sidekick-default.ts';
 import Anthropic from '@anthropic-ai/sdk';
+
+import { SIDEKICK_DEFAULT_PROMPT } from '../prompts/sidekick-default.ts';
 import { SidekickCoreEnv } from '../config/env.ts';
 import { Logger } from '../config/logger.ts';
 import {
@@ -9,13 +10,64 @@ import {
   RoleTypes,
 } from '../config/types.ts';
 
-const ANTHROPIC_API_KEY = SidekickCoreEnv.get('ANTHROPIC_API_KEY');
-
 const logger = new Logger('anthropic');
 
 const anthropicClient = new Anthropic({
-  apiKey: ANTHROPIC_API_KEY,
+  apiKey: SidekickCoreEnv.get('ANTHROPIC_API_KEY'),
 });
+
+type StreamHandlers = {
+  onChunk: (text: string) => void;
+  onStatus?: (status: string) => void;
+};
+
+const buildSystemPrompt = (systemPrompt?: string): string =>
+  systemPrompt ? `${SIDEKICK_DEFAULT_PROMPT}\n\n${systemPrompt}` : SIDEKICK_DEFAULT_PROMPT;
+
+const createStream = (prompt: string, system: string) =>
+  anthropicClient.messages.stream({
+    model: 'claude-sonnet-4-5-20250929',
+    max_tokens: 1024,
+    system,
+    messages: [
+      {
+        role: RoleTypes.USER,
+        content: prompt,
+      },
+    ],
+    tools: [
+      {
+        type: 'web_search_20250305',
+        name: 'web_search',
+        max_uses: 1,
+      },
+    ],
+    cache_control: { type: 'ephemeral' },
+  });
+
+const isWebSearchStart = (event: any): boolean =>
+  event.type === AnthropicEventTypes.CONTENT_BLOCK_START &&
+  event.content_block?.type === AnthropicContentBlockTypes.SERVER_TOOL_USE &&
+  event.content_block?.name === AnthropicContentBlockNames.WEB_SEARCH;
+
+const isTextDelta = (event: any): boolean =>
+  event.type === AnthropicEventTypes.CONTENT_BLOCK_DELTA && event.delta?.type === 'text_delta';
+
+const processStream = async (stream: AsyncIterable<any>, { onChunk, onStatus }: StreamHandlers) => {
+  let webSearchEmitted = false;
+
+  for await (const event of stream) {
+    if (!webSearchEmitted && onStatus && isWebSearchStart(event)) {
+      webSearchEmitted = true;
+      onStatus('web_search_active');
+      continue;
+    }
+
+    if (isTextDelta(event)) {
+      onChunk(event.delta.text);
+    }
+  }
+};
 
 export const streamTextUsingAnthropic = async (
   prompt: string,
@@ -24,54 +76,13 @@ export const streamTextUsingAnthropic = async (
   onStatus?: (status: string) => void
 ): Promise<void> => {
   try {
-    let webSearchEmitted = false;
+    const system = buildSystemPrompt(systemPrompt);
 
-    const finalSystemPrompt = systemPrompt
-      ? `${SIDEKICK_DEFAULT_PROMPT}\n\n${systemPrompt}`
-      : SIDEKICK_DEFAULT_PROMPT;
+    const stream = createStream(prompt, system);
 
-    const stream = anthropicClient.messages.stream({
-      model: 'claude-sonnet-4-5-20250929',
-      max_tokens: 1024,
-      system: finalSystemPrompt,
-      tools: [
-        {
-          type: 'web_search_20250305',
-          name: 'web_search',
-          max_uses: 1,
-        },
-      ],
-      messages: [{ role: RoleTypes.USER, content: prompt }],
-      cache_control: { type: 'ephemeral' },
-    });
-
-    // //cheap one for now
-    // const stream = anthropicClient.messages.stream({
-    //   model: 'claude-haiku-4-5-20251001',
-    //   max_tokens: 512,
-    //   system: finalSystemPrompt,
-    //   messages: [{ role: RoleTypes.USER, content: prompt }],
-    //   cache_control: { type: 'ephemeral' },
-    // });
-
-    for await (const event of stream) {
-      if (
-        !webSearchEmitted &&
-        onStatus &&
-        event.type === AnthropicEventTypes.CONTENT_BLOCK_START &&
-        event.content_block.type === AnthropicContentBlockTypes.SERVER_TOOL_USE &&
-        event.content_block.name === AnthropicContentBlockNames.WEB_SEARCH
-      ) {
-        webSearchEmitted = true;
-        onStatus('web_search_active');
-      }
-
-      if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-        onChunk(event.delta.text);
-      }
-    }
+    await processStream(stream, onStatus ? { onChunk, onStatus } : { onChunk });
   } catch (error) {
-    logger.error('Stream failed:', error);
+    logger.error('Anthropic stream failed', error);
     throw error;
   }
 };
