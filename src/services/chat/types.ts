@@ -20,16 +20,15 @@ export interface IMessage {
   sessionId: string;
   role: RoleTypes;
   content: string;
-  metadata?: IMessageMetadata;
   ctime: Date; //granular data on message level
-  like: boolean;
-  dislike: boolean;
-  inputTokens: number;
-  outputTokens: number;
-  cost: number;
+  latencyMs?: number;
+  meta?: IMessageMetadata;
 }
 
 export interface IMessageMetadata {
+  inputTokens: number;
+  outputTokens: number;
+  cost: number;
   liked?: boolean;
   dislike?: boolean;
   copied?: boolean;
