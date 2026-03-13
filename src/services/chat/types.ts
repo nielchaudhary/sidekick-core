@@ -4,6 +4,10 @@ export interface IChat {
   title: string;
   ctime: Date; //on the whole conversation level
   model: string;
+  totalInputTokens: number;
+  totalOutputTokens: number;
+  totalCost: number;
+  messageCount: number;
 }
 
 export enum RoleTypes {
@@ -20,7 +24,9 @@ export interface IMessage {
   ctime: Date; //granular data on message level
   like: boolean;
   dislike: boolean;
-  copied: boolean;
+  inputTokens: number;
+  outputTokens: number;
+  cost: number;
 }
 
 export interface IMessageMetadata {
