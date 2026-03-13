@@ -2,6 +2,7 @@ import OpenAI from 'openai';
 
 import { SidekickCoreEnv } from '../config/env.ts';
 import { Logger } from '../config/logger.ts';
+import { type StreamHandlers } from './config.ts';
 import { RoleTypes } from '../config/types.ts';
 
 const logger = new Logger('openai');
@@ -9,11 +10,6 @@ const logger = new Logger('openai');
 export const openAIClient = new OpenAI({
   apiKey: SidekickCoreEnv.get('OPENAI_API_KEY'),
 });
-
-type StreamHandlers = {
-  onChunk: (text: string) => void;
-  onStatus?: (status: string) => void;
-};
 
 const buildInput = (
   prompt: string,

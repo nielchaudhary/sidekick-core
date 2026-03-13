@@ -10,16 +10,13 @@ import {
   RoleTypes,
 } from '../config/types.ts';
 
+import { type StreamHandlers } from './config.ts';
+
 const logger = new Logger('anthropic');
 
 const anthropicClient = new Anthropic({
   apiKey: SidekickCoreEnv.get('ANTHROPIC_API_KEY'),
 });
-
-type StreamHandlers = {
-  onChunk: (text: string) => void;
-  onStatus?: (status: string) => void;
-};
 
 const buildSystemPrompt = (systemPrompt?: string): string =>
   systemPrompt ? `${SIDEKICK_DEFAULT_PROMPT}\n\n${systemPrompt}` : SIDEKICK_DEFAULT_PROMPT;

@@ -1,8 +1,4 @@
-export enum RoleTypes {
-  USER = 'user',
-  ASSISTANT = 'assistant',
-}
-
+import { RoleTypes } from '../../config/types.ts';
 //document insertion
 export interface IChat {
   sessionId: string;
