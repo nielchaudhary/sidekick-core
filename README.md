@@ -231,17 +231,17 @@ Returns server health status.
 
 **Environment Variables**
 
-| Variable | Required | Description |
-|---|---|---|
-| `mongoURI` | Yes | MongoDB Atlas connection string |
-| `UPSTASH_REDIS_URL` | Yes | Upstash Redis REST endpoint |
-| `UPSTASH_REDIS_TOKEN` | Yes | Upstash Redis authentication token |
-| `ANTHROPIC_API_KEY` | Yes | Anthropic Claude API key |
-| `OPENAI_API_KEY` | Yes | OpenAI API key |
-| `GROQ_API_KEY` | Yes | Groq API key (audio transcription) |
-| `MEM0_API_KEY` | Yes | Mem0 memory service API key |
-| `SARVAM_API_KEY` | No | Sarvam AI provider key |
-| `PORT` | No | HTTP listen port (default: `8090`) |
+| Variable              | Required | Description                        |
+| --------------------- | -------- | ---------------------------------- |
+| `mongoURI`            | Yes      | MongoDB Atlas connection string    |
+| `UPSTASH_REDIS_URL`   | Yes      | Upstash Redis REST endpoint        |
+| `UPSTASH_REDIS_TOKEN` | Yes      | Upstash Redis authentication token |
+| `ANTHROPIC_API_KEY`   | Yes      | Anthropic Claude API key           |
+| `OPENAI_API_KEY`      | Yes      | OpenAI API key                     |
+| `GROQ_API_KEY`        | Yes      | Groq API key (audio transcription) |
+| `MEM0_API_KEY`        | Yes      | Mem0 memory service API key        |
+| `SARVAM_API_KEY`      | No       | Sarvam AI provider key             |
+| `PORT`                | No       | HTTP listen port (default: `8090`) |
 
 The service validates `mongoURI` at startup and throws a `SidekickPlatformError.validation` if it is missing.
 
