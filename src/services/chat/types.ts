@@ -1,3 +1,8 @@
+export enum RoleTypes {
+  USER = 'user',
+  ASSISTANT = 'assistant',
+}
+
 //document insertion
 export interface IChat {
   sessionId: string;
@@ -8,11 +13,6 @@ export interface IChat {
   totalOutputTokens: number;
   totalCost: number;
   messageCount: number;
-}
-
-export enum RoleTypes {
-  USER = 'user',
-  ASSISTANT = 'assistant',
 }
 
 export interface IMessage {
