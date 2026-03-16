@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-
+import { sidekickWaitlistMailHtml } from './sidekickWaitlistMail.ts';
 import { Logger } from '../../config/logger.ts';
 import { SidekickCoreEnv } from '../../config/env.ts';
 
@@ -22,12 +22,7 @@ export const sendSidekickWaitlistMail = async (email: string, name: string) => {
       from: 'Sidekick Team <neilchaudhary12.work@gmail.com>',
       to: email,
       subject: "You're on the Sidekick Waitlist!",
-      html: `
-        <h2>Welcome to the Sidekick Waitlist, ${name}!</h2>
-        <p>Thanks for signing up. We'll notify you as soon as your spot is ready.</p>
-        <p>Stay tuned!</p>
-        <p>— The Sidekick Team</p>
-      `,
+      html: sidekickWaitlistMailHtml(name),
     });
   } catch (err) {
     logger.error('Failed to send waitlist email:', err);

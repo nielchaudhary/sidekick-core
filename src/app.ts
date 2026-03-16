@@ -7,7 +7,6 @@ import { SidekickPlatformError, getErrorDetails } from './config/exceptions.ts';
 import { waitlistRouter } from './services/waitlist/waitlistRouterV1.ts';
 import { chatRouterV1 } from './services/chat/chatRouterV1.ts';
 import cors from 'cors';
-import { sendSidekickWaitlistMail } from './services/scheduler/config.ts';
 
 const logger = new Logger('server');
 const PORT = SidekickCoreEnv.get('PORT') || 8090;
@@ -19,8 +18,6 @@ const startSidekickPlatformServer = async (): Promise<void> => {
   await initDB();
 
   await initCache();
-
-  await sendSidekickWaitlistMail('neilchaudhary12@gmail.com', 'Neel Chaudhary');
 
   const sidekickPlatformServer = express();
 
