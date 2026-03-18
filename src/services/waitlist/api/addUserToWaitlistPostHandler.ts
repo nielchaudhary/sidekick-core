@@ -4,6 +4,7 @@ import { wrapSidekickError } from '../../../config/exceptions.ts';
 import { waitlistRequestSchema, type IWaitlistDetails } from '../types.ts';
 import { getDBColl, WAITLIST_COLLECTION } from '../../../config/database.ts';
 import { generateUserId } from '../../../config/predicates.ts';
+import { sendSidekickWaitlistMail } from '../../scheduler/config.ts';
 
 const logger = new Logger('addUserToWaitlistPostHandler');
 
@@ -35,11 +36,16 @@ export const addUserToWaitlistPostHandler = async (
       });
     }
 
-    await waitlistCollection.insertOne({
-      email,
-      occupation,
-      userId: generateUserId(),
-    } as IWaitlistDetails);
+    await Promise.all([
+      waitlistCollection.insertOne({
+        email,
+        occupation,
+        userId: generateUserId(),
+      } as IWaitlistDetails),
+      sendSidekickWaitlistMail(email),
+    ]);
+
+    logger.info(`Inserted user data in DB and sent the waitlist mail successfully to ${email}`);
 
     return res.status(200).json({
       success: true,
