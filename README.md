@@ -59,7 +59,7 @@ MongoDB singleton with typed collection access.
 
 - Initializes a TLS-enabled MongoDB Atlas connection on startup
 - Exposes typed collections: `users`, `waitlist`
-- Provides `getDBColl<T>(name)` for generic collection access
+- Provides `getMongoDBColl<T>(name)` for generic collection access
 
 **Important Methods**
 

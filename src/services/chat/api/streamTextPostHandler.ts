@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
-import { Logger } from '../../../config/logger.ts';
-import { LLMProviders } from '../../../config/global-constants.ts';
+import { Logger } from '../../../config/core/logger.ts';
+import { LLMProviders } from '../../../config/core/global-constants.ts';
 import { streamTextUsingOpenAI } from '../../../providers/openai.ts';
 import { streamTextUsingAnthropic } from '../../../providers/anthropic.ts';
 

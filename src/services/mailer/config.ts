@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 import { sidekickWaitlistMailHtml } from './sidekickWaitlistMail.ts';
-import { Logger } from '../../config/logger.ts';
-import { SidekickCoreEnv } from '../../config/env.ts';
+import { Logger } from '../../config/core/logger.ts';
+import { SidekickCoreEnv } from '../../config/core/env.ts';
 
 const logger = new Logger('mailer/config');
 

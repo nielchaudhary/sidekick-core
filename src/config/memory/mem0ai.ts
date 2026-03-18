@@ -1,7 +1,7 @@
 import { MemoryClient } from 'mem0ai';
-import { SidekickCoreEnv } from './env.ts';
+import { SidekickCoreEnv } from '../core/env.ts';
 
-import { Logger } from './logger.ts';
+import { Logger } from '../core/logger.ts';
 
 const logger = new Logger('mem0');
 

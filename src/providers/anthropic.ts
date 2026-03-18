@@ -1,9 +1,9 @@
 import Anthropic from '@anthropic-ai/sdk';
 
 import { SIDEKICK_DEFAULT_PROMPT } from '../prompts/sidekick-default.ts';
-import { SidekickCoreEnv } from '../config/env.ts';
-import { Logger } from '../config/logger.ts';
-import { AnthropicContentBlockNames, AnthropicContentBlockTypes, AnthropicEventTypes, RoleTypes } from '../config/types.ts';
+import { SidekickCoreEnv } from '../config/core/env.ts';
+import { Logger } from '../config/core/logger.ts';
+import { AnthropicContentBlockNames, AnthropicContentBlockTypes, AnthropicEventTypes, RoleTypes } from '../config/core/types.ts';
 
 import { type StreamHandlers } from './config.ts';
 

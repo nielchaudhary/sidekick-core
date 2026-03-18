@@ -1,9 +1,9 @@
 import OpenAI from 'openai';
 
-import { SidekickCoreEnv } from '../config/env.ts';
-import { Logger } from '../config/logger.ts';
+import { SidekickCoreEnv } from '../config/core/env.ts';
+import { Logger } from '../config/core/logger.ts';
 import { type StreamHandlers } from './config.ts';
-import { RoleTypes } from '../config/types.ts';
+import { RoleTypes } from '../config/core/types.ts';
 
 const logger = new Logger('openai');
 

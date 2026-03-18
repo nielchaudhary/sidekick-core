@@ -1,7 +1,7 @@
 import fs from 'fs';
 import Groq from 'groq-sdk';
-import { SidekickCoreEnv } from './env.ts';
-import { Logger } from './logger.ts';
+import { SidekickCoreEnv } from '../config/core/env.ts';
+import { Logger } from '../config/core/logger.ts';
 
 const logger = new Logger('groq');
 const groq = new Groq({ apiKey: SidekickCoreEnv.get('GROQ_API_KEY') });

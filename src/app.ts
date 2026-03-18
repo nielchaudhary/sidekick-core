@@ -1,12 +1,13 @@
 import express from 'express';
-import { Logger } from './config/logger.ts';
-import { SidekickCoreEnv } from './config/env.ts';
-import { initDB, closeDB } from './config/database.ts';
-import { closeCache, initCache } from './config/redis.ts';
-import { SidekickPlatformError, getErrorDetails } from './config/exceptions.ts';
+import { Logger } from './config/core/logger.ts';
+import { SidekickCoreEnv } from './config/core/env.ts';
+import { initMongoDB, closeMongoDB } from './config/database/mongoDB.ts';
+import { closeCache, initCache } from './config/database/redis.ts';
+import { SidekickPlatformError, getErrorDetails } from './config/core/exceptions.ts';
 import { waitlistRouter } from './services/waitlist/waitlistRouterV1.ts';
 import { chatRouterV1 } from './services/chat/chatRouterV1.ts';
 import cors from 'cors';
+import { closeSupabaseDB, initSupabaseDB } from './config/database/supabase.ts';
 
 const logger = new Logger('server');
 const PORT = SidekickCoreEnv.get('PORT') || 8090;
@@ -15,8 +16,8 @@ const startSidekickPlatformServer = async (): Promise<void> => {
   SidekickCoreEnv.initEnvironmentVars();
   logger.info('Loaded environment variables');
 
-  await initDB();
-
+  await initMongoDB();
+  await initSupabaseDB();
   await initCache();
 
   const sidekickPlatformServer = express();
@@ -42,7 +43,7 @@ const gracefulShutdown = async (signal: string): Promise<void> => {
   logger.info(`Received ${signal}. Shutting down...`);
 
   try {
-    await Promise.all([closeDB(), closeCache()]);
+    await Promise.all([closeMongoDB(), closeCache(), closeSupabaseDB()]);
     logger.info('Cleanup completed');
     process.exit(0);
   } catch (error) {
