@@ -1,4 +1,4 @@
-export const sidekickWaitlistMailHtml = (name: string) => `<!DOCTYPE html>
+export const sidekickWaitlistMailHtml = `<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
   <meta charset="utf-8">
@@ -36,7 +36,7 @@ export const sidekickWaitlistMailHtml = (name: string) => `<!DOCTYPE html>
 
   <!-- Preheader -->
   <div style="display: none; max-height: 0px; overflow: hidden;">
-    You're on the list, ${name}. We'll let you know when it's your turn. &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+    You're on the list. We'll let you know when it's your turn. &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
   </div>
 
   <!-- Email Body -->
@@ -71,7 +71,7 @@ export const sidekickWaitlistMailHtml = (name: string) => `<!DOCTYPE html>
                 <tr>
                   <td style="padding-bottom: 24px;">
                     <h1 style="margin: 0; color: #f0f0f0; font-size: 28px; font-weight: 700; line-height: 1.3;">
-                      Welcome to the waitlist, ${name}.
+                      Welcome to the waitlist.
                     </h1>
                   </td>
                 </tr>

@@ -16,13 +16,13 @@ const transport = nodemailer.createTransport({
   auth: { user: SMTP_USERNAME, pass: SMTP_PASSWORD },
 } as nodemailer.TransportOptions);
 
-export const sendSidekickWaitlistMail = async (email: string, name: string) => {
+export const sendSidekickWaitlistMail = async (email: string) => {
   try {
     await transport.sendMail({
       from: 'Sidekick Team <neilchaudhary12.work@gmail.com>',
       to: email,
       subject: "You're on the Sidekick Waitlist!",
-      html: sidekickWaitlistMailHtml(name),
+      html: sidekickWaitlistMailHtml,
     });
   } catch (err) {
     logger.error('Failed to send waitlist email:', err);
