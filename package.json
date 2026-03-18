@@ -26,6 +26,7 @@
     "@types/nodemailer": "^7.0.11",
     "@types/superagent": "^8.1.9",
     "@upstash/redis": "^1.36.1",
+    "ai": "^6.0.116",
     "cors": "^2.8.6",
     "debug": "^4.4.3",
     "dotenv": "^17.2.3",
