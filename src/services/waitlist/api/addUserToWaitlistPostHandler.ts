@@ -8,11 +8,7 @@ import { sendSidekickWaitlistMail } from '../../scheduler/config.ts';
 
 const logger = new Logger('addUserToWaitlistPostHandler');
 
-export const addUserToWaitlistPostHandler = async (
-  req: Request,
-  res: Response,
-  _next: NextFunction
-) => {
+export const addUserToWaitlistPostHandler = async (req: Request, res: Response, _next: NextFunction) => {
   try {
     const parsedWaitlistRequest = waitlistRequestSchema.safeParse(req.body);
 
@@ -36,14 +32,13 @@ export const addUserToWaitlistPostHandler = async (
       });
     }
 
-    await Promise.all([
-      waitlistCollection.insertOne({
-        email,
-        occupation,
-        userId: generateUserId(),
-      } as IWaitlistDetails),
-      sendSidekickWaitlistMail(email),
-    ]);
+    const waitlistData = {
+      email,
+      occupation,
+      userId: generateUserId(),
+    };
+
+    await Promise.all([waitlistCollection.insertOne(waitlistData as IWaitlistDetails), sendSidekickWaitlistMail(email)]);
 
     logger.info(`Inserted user data in DB and sent the waitlist mail successfully to ${email}`);
 

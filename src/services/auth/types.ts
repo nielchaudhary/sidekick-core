@@ -78,10 +78,7 @@ export interface IUserIntegration {
   settings: IntegrationSettings; // Provider-specific config
 }
 
-export type IntegrationSettings =
-  | NotionIntegrationSettings
-  | GoogleIntegrationSettings
-  | SlackIntegrationSettings;
+export type IntegrationSettings = NotionIntegrationSettings | GoogleIntegrationSettings | SlackIntegrationSettings;
 
 export interface NotionIntegrationSettings {
   provider: IntegrationProvider.NOTION;

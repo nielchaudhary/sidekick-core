@@ -27,8 +27,7 @@ export const streamTextPostHandler = async (req: Request, res: Response, _next: 
   res.flushHeaders();
 
   try {
-    const streamFn =
-      llmProvider === LLMProviders.OPENAI ? streamTextUsingOpenAI : streamTextUsingAnthropic;
+    const streamFn = llmProvider === LLMProviders.OPENAI ? streamTextUsingOpenAI : streamTextUsingAnthropic;
 
     await streamFn(
       prompt,

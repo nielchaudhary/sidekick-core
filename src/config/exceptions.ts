@@ -98,13 +98,7 @@ const CLASSIFICATION_RULES: ClassificationRule[] = [
   {
     category: ErrorCategory.CONFIGURATION,
     patterns: {
-      messagePatterns: [
-        'config',
-        'environment',
-        'not defined',
-        'missing env',
-        'invalid configuration',
-      ],
+      messagePatterns: ['config', 'environment', 'not defined', 'missing env', 'invalid configuration'],
     },
   },
   {
@@ -359,15 +353,12 @@ export const getErrorDetails = (error: unknown, context?: Partial<ErrorContext>)
     return details;
   }
 
-  const baseContext: ErrorContext | undefined = context
-    ? { timestamp: new Date(), ...context }
-    : undefined;
+  const baseContext: ErrorContext | undefined = context ? { timestamp: new Date(), ...context } : undefined;
 
   // Standard Error object
   if (error instanceof Error) {
     const category = categorizeError(error);
-    const code: string | number | undefined =
-      'code' in error ? (error.code as string | number) : undefined;
+    const code: string | number | undefined = 'code' in error ? (error.code as string | number) : undefined;
 
     return {
       message: error.message || 'An error occurred',
@@ -441,10 +432,7 @@ export const getErrorDetails = (error: unknown, context?: Partial<ErrorContext>)
   };
 };
 
-export const wrapSidekickError = (
-  error: unknown,
-  fallbackMessage = 'An unexpected error occurred'
-): SidekickPlatformError => {
+export const wrapSidekickError = (error: unknown, fallbackMessage = 'An unexpected error occurred'): SidekickPlatformError => {
   if (SidekickPlatformError.isInstance(error)) {
     return error;
   }

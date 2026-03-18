@@ -18,15 +18,11 @@ class Cache {
     }
 
     if (isNullOrUndefined(redisUrl)) {
-      throw SidekickPlatformError.cache(
-        'UPSTASH_REDIS_REST_URL is not defined in environment variables'
-      );
+      throw SidekickPlatformError.cache('UPSTASH_REDIS_REST_URL is not defined in environment variables');
     }
 
     if (isNullOrUndefined(redisToken)) {
-      throw SidekickPlatformError.cache(
-        'UPSTASH_REDIS_REST_TOKEN is not defined in environment variables'
-      );
+      throw SidekickPlatformError.cache('UPSTASH_REDIS_REST_TOKEN is not defined in environment variables');
     }
 
     try {
