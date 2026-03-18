@@ -61,9 +61,7 @@ export const closeDB = async (): Promise<void> => {
   }
 };
 
-export const getDBColl = async <T extends MongoDBDoc = MongoDBDoc>(
-  collName: string
-): Promise<Collection<T>> => {
+export const getDBColl = async <T extends MongoDBDoc = MongoDBDoc>(collName: string): Promise<Collection<T>> => {
   if (!DB.client) {
     await initDB();
   }

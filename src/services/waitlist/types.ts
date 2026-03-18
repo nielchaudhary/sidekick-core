@@ -14,6 +14,7 @@ export enum Occupation {
 export interface IWaitlistDetails {
   email: string;
   occupation: Occupation;
+  userId: string;
 }
 
 //zod validation schema

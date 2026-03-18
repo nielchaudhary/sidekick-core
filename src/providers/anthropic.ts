@@ -3,12 +3,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { SIDEKICK_DEFAULT_PROMPT } from '../prompts/sidekick-default.ts';
 import { SidekickCoreEnv } from '../config/env.ts';
 import { Logger } from '../config/logger.ts';
-import {
-  AnthropicContentBlockNames,
-  AnthropicContentBlockTypes,
-  AnthropicEventTypes,
-  RoleTypes,
-} from '../config/types.ts';
+import { AnthropicContentBlockNames, AnthropicContentBlockTypes, AnthropicEventTypes, RoleTypes } from '../config/types.ts';
 
 import { type StreamHandlers } from './config.ts';
 
@@ -47,8 +42,7 @@ const isWebSearchStart = (event: any): boolean =>
   event.content_block?.type === AnthropicContentBlockTypes.SERVER_TOOL_USE &&
   event.content_block?.name === AnthropicContentBlockNames.WEB_SEARCH;
 
-const isTextDelta = (event: any): boolean =>
-  event.type === AnthropicEventTypes.CONTENT_BLOCK_DELTA && event.delta?.type === 'text_delta';
+const isTextDelta = (event: any): boolean => event.type === AnthropicEventTypes.CONTENT_BLOCK_DELTA && event.delta?.type === 'text_delta';
 
 const processStream = async (stream: AsyncIterable<any>, { onChunk, onStatus }: StreamHandlers) => {
   let webSearchEmitted = false;

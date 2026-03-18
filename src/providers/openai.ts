@@ -11,10 +11,7 @@ export const openAIClient = new OpenAI({
   apiKey: SidekickCoreEnv.get('OPENAI_API_KEY'),
 });
 
-const buildInput = (
-  prompt: string,
-  systemPrompt?: string
-): OpenAI.Responses.ResponseInputItem[] => {
+const buildInput = (prompt: string, systemPrompt?: string): OpenAI.Responses.ResponseInputItem[] => {
   const input: OpenAI.Responses.ResponseInputItem[] = [];
 
   if (systemPrompt) {
@@ -39,8 +36,7 @@ const createStream = async (prompt: string, systemPrompt?: string) =>
     stream: true,
   });
 
-const isTextDelta = (event: any): boolean =>
-  event.type === 'response.output_text.delta' && !!event.delta;
+const isTextDelta = (event: any): boolean => event.type === 'response.output_text.delta' && !!event.delta;
 
 const processStream = async (stream: AsyncIterable<any>, { onChunk }: StreamHandlers) => {
   for await (const event of stream) {

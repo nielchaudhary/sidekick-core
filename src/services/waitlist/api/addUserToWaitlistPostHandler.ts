@@ -4,14 +4,11 @@ import { wrapSidekickError } from '../../../config/exceptions.ts';
 import { waitlistRequestSchema, type IWaitlistDetails } from '../types.ts';
 import { getDBColl, WAITLIST_COLLECTION } from '../../../config/database.ts';
 import { generateUserId } from '../../../config/predicates.ts';
+import { sendSidekickWaitlistMail } from '../../mailer/config.ts';
 
 const logger = new Logger('addUserToWaitlistPostHandler');
 
-export const addUserToWaitlistPostHandler = async (
-  req: Request,
-  res: Response,
-  _next: NextFunction
-) => {
+export const addUserToWaitlistPostHandler = async (req: Request, res: Response, _next: NextFunction) => {
   try {
     const parsedWaitlistRequest = waitlistRequestSchema.safeParse(req.body);
 
@@ -35,11 +32,20 @@ export const addUserToWaitlistPostHandler = async (
       });
     }
 
-    await waitlistCollection.insertOne({
+    const waitlistData: IWaitlistDetails = {
       email,
-      occupation,
+      occupation: occupation as IWaitlistDetails['occupation'],
       userId: generateUserId(),
-    } as IWaitlistDetails);
+    };
+
+    await waitlistCollection.insertOne(waitlistData);
+
+    logger.info('Inserted user data in DB successfully');
+
+    // Fire-and-forget: don't block the response on email delivery
+    sendSidekickWaitlistMail(email).catch((err) => {
+      logger.error('Failed to send waitlist email:', err);
+    });
 
     return res.status(200).json({
       success: true,

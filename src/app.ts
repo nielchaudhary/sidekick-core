@@ -52,10 +52,7 @@ const gracefulShutdown = async (signal: string): Promise<void> => {
 };
 
 startSidekickPlatformServer().catch((err: Error) => {
-  const error =
-    err instanceof SidekickPlatformError
-      ? err
-      : SidekickPlatformError.internal('Failed to start server', err);
+  const error = err instanceof SidekickPlatformError ? err : SidekickPlatformError.internal('Failed to start server', err);
 
   logger.error('Sidekick Platform Server Bootup Failed:', error.message);
   process.exit(1);
