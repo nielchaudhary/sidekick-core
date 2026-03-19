@@ -34,7 +34,6 @@ export enum SubscriptionTier {
 
 export enum SubscriptionStatus {
   ACTIVE = 'ACTIVE',
-  PAST_DUE = 'PAST_DUE',
   CANCELED = 'CANCELED',
   TRIAL = 'TRIAL',
 }
