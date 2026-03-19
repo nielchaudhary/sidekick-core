@@ -19,6 +19,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.58",
     "@anthropic-ai/sdk": "^0.78.0",
     "@types/cors": "^2.8.19",
     "@types/debug": "^4.1.12",

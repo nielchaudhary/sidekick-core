@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { Logger } from '../../../config/core/logger.ts';
 import { LLMProviders } from '../../../config/core/global-constants.ts';
 import { streamTextUsingOpenAI } from '../../../providers/openai.ts';
-import { streamTextUsingAnthropic } from '../../../providers/anthropic.ts';
+import { streamTextUsingAiSdk } from '../../../providers/ai-sdk.ts';
 
 const logger = new Logger('streamTextPostHandler');
 
@@ -27,7 +27,7 @@ export const streamTextPostHandler = async (req: Request, res: Response, _next: 
   res.flushHeaders();
 
   try {
-    const streamFn = llmProvider === LLMProviders.OPENAI ? streamTextUsingOpenAI : streamTextUsingAnthropic;
+    const streamFn = llmProvider === LLMProviders.OPENAI ? streamTextUsingOpenAI : streamTextUsingAiSdk;
 
     await streamFn(
       prompt,
