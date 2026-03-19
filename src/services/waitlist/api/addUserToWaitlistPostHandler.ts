@@ -1,9 +1,9 @@
 import type { NextFunction, Request, Response } from 'express';
-import { Logger } from '../../../config/logger.ts';
-import { wrapSidekickError } from '../../../config/exceptions.ts';
+import { Logger } from '../../../config/core/logger.ts';
+import { wrapSidekickError } from '../../../config/core/exceptions.ts';
 import { waitlistRequestSchema, type IWaitlistDetails } from '../types.ts';
-import { getDBColl, WAITLIST_COLLECTION } from '../../../config/database.ts';
-import { generateUserId } from '../../../config/predicates.ts';
+import { getMongoDBColl, WAITLIST_COLLECTION } from '../../../config/database/mongoDB.ts';
+import { generateUserId } from '../../../config/core/predicates.ts';
 import { sendSidekickWaitlistMail } from '../../mailer/config.ts';
 
 const logger = new Logger('addUserToWaitlistPostHandler');
@@ -21,7 +21,7 @@ export const addUserToWaitlistPostHandler = async (req: Request, res: Response, 
 
     const { email, occupation } = parsedWaitlistRequest.data;
 
-    const waitlistCollection = await getDBColl(WAITLIST_COLLECTION);
+    const waitlistCollection = await getMongoDBColl(WAITLIST_COLLECTION);
 
     const existingUser = await waitlistCollection.findOne({ email });
 

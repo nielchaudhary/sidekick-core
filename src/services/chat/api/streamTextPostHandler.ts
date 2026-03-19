@@ -1,24 +1,14 @@
 import type { Request, Response, NextFunction } from 'express';
-import { Logger } from '../../../config/logger.ts';
-import { LLMProviders } from '../../../config/global-constants.ts';
-import { streamTextUsingOpenAI } from '../../../providers/openai.ts';
-import { streamTextUsingAnthropic } from '../../../providers/anthropic.ts';
+import { Logger } from '../../../config/core/logger.ts';
+import { streamTextUsingAiSDK } from '../../../providers/ai-sdk.ts';
 
 const logger = new Logger('streamTextPostHandler');
 
 export const streamTextPostHandler = async (req: Request, res: Response, _next: NextFunction) => {
-  const { llmProvider } = req.query as { llmProvider: LLMProviders };
-  const { prompt, systemPrompt } = req.body as { prompt: string; systemPrompt?: string };
+  const { prompt, systemPrompt, modelId } = req.body as { prompt: string; systemPrompt?: string; modelId?: string };
 
   if (!prompt) {
     return res.status(400).json({ success: false, error: 'prompt is required' });
-  }
-
-  if (!Object.values(LLMProviders).includes(llmProvider)) {
-    return res.status(400).json({
-      success: false,
-      error: `Invalid llmProvider. Must be one of: ${Object.values(LLMProviders).join(', ')}`,
-    });
   }
 
   res.setHeader('Content-Type', 'text/event-stream');
@@ -27,9 +17,7 @@ export const streamTextPostHandler = async (req: Request, res: Response, _next: 
   res.flushHeaders();
 
   try {
-    const streamFn = llmProvider === LLMProviders.OPENAI ? streamTextUsingOpenAI : streamTextUsingAnthropic;
-
-    await streamFn(
+    await streamTextUsingAiSDK(
       prompt,
       (chunk: string) => {
         res.write(`data: ${JSON.stringify({ text: chunk })}\n\n`);
@@ -37,7 +25,8 @@ export const streamTextPostHandler = async (req: Request, res: Response, _next: 
       systemPrompt,
       (status: string) => {
         res.write(`data: ${JSON.stringify({ type: 'status', status })}\n\n`);
-      }
+      },
+      modelId
     );
 
     res.write('data: [DONE]\n\n');

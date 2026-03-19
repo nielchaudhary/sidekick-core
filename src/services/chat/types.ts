@@ -1,4 +1,4 @@
-import { RoleTypes } from '../../config/types.ts';
+import { RoleTypes } from '../../config/core/types.ts';
 //document insertion
 export interface IChat {
   sessionId: string;

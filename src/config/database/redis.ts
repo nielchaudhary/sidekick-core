@@ -1,8 +1,8 @@
 import { Redis } from '@upstash/redis';
-import { Logger } from './logger.ts';
-import { isNullOrUndefined } from './predicates.ts';
-import { getErrorDetails, SidekickPlatformError } from './exceptions.ts';
-import { SidekickCoreEnv } from './env.ts';
+import { Logger } from '../core/logger.ts';
+import { isNullOrUndefined } from '../core/predicates.ts';
+import { getErrorDetails, SidekickPlatformError } from '../core/exceptions.ts';
+import { SidekickCoreEnv } from '../core/env.ts';
 
 const logger = new Logger('redis');
 const redisUrl = SidekickCoreEnv.get('UPSTASH_REDIS_URL');

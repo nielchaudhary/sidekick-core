@@ -29,17 +29,16 @@ export enum MemorySource {
 export enum SubscriptionTier {
   FREE = 'FREE',
   PRO = 'PRO',
+  MAX = 'MAX',
 }
 
 export enum SubscriptionStatus {
   ACTIVE = 'ACTIVE',
-  PAST_DUE = 'PAST_DUE',
   CANCELED = 'CANCELED',
   TRIAL = 'TRIAL',
 }
 
 export interface ISidekickUser {
-  clerkId: string; // External auth reference
   email: string; // Make required, need this for billing
   name: string;
   avatarUrl?: string;
