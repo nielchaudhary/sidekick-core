@@ -19,14 +19,32 @@ export const streamTextUsingAiSdk = async (
   prompt: string,
   onChunk: (text: string) => void,
   systemPrompt?: string,
-  _onStatus?: (status: string) => void
+  onStatus?: (status: string) => void
 ): Promise<void> => {
   try {
+    let webSearchEmitted = false;
+
     const result = streamText({
       model: anthropic('claude-sonnet-4-5-20250929'),
       system: buildSystemPrompt(systemPrompt),
       messages: [{ role: RoleTypes.USER, content: prompt }],
       maxOutputTokens: 1024,
+      tools: {
+        web_search: anthropic.tools.webSearch_20250305({
+          maxUses: 1,
+        }),
+      },
+      onChunk({ chunk }) {
+        if (!webSearchEmitted && onStatus && chunk.type === 'tool-call' && chunk.toolName === 'web_search') {
+          webSearchEmitted = true;
+          onStatus('web_search_active');
+        }
+      },
+      providerOptions: {
+        anthropic: {
+          cacheControl: { type: 'ephemeral' },
+        },
+      },
     });
 
     const reader = result.textStream.getReader();
