@@ -55,16 +55,16 @@ export type ModelId = keyof typeof REGISTRY;
 
 export type ModelEntry = RegistryEntry & { id: ModelId };
 
-export const DEFAULT_MODEL_ID = 'sonnet-4.5' satisfies ModelId;
+export const FALLBACK_MODEL_ID = 'sonnet-4.5' satisfies ModelId;
 
 export const AVAILABLE_MODEL_IDS = Object.keys(REGISTRY) as ModelId[];
 
 export const isValidModelId = (id: string): id is ModelId => id in REGISTRY;
 
 export const getModel = (modelId?: string): ModelEntry => {
-  const id: ModelId = modelId && isValidModelId(modelId) ? modelId : DEFAULT_MODEL_ID;
+  const id: ModelId = modelId && isValidModelId(modelId) ? modelId : FALLBACK_MODEL_ID;
   if (modelId && !isValidModelId(modelId)) {
-    logger.info(`Unknown model ID "${modelId}", falling back to ${DEFAULT_MODEL_ID}`);
+    logger.info(`Unknown model ID "${modelId}", falling back to ${FALLBACK_MODEL_ID}`);
   }
   return { id, ...REGISTRY[id] };
 };
