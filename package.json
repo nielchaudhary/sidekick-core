@@ -25,7 +25,6 @@
     "@types/debug": "^4.1.12",
     "@types/express": "^5.0.6",
     "@types/nodemailer": "^7.0.11",
-    "@types/superagent": "^8.1.9",
     "@upstash/redis": "^1.36.1",
     "ai": "^6.0.116",
     "cors": "^2.8.6",
@@ -38,20 +37,16 @@
     "madge": "^8.0.0",
     "mem0ai": "^2.2.4",
     "mongodb": "^7.0.0",
-    "nanoid": "^5.1.6",
     "nodemailer": "^8.0.2",
     "nodemon": "^3.1.11",
-    "openai": "^6.25.0",
     "postgres": "^3.4.8",
     "prettier": "^3.7.4",
-    "superagent": "^10.3.0",
     "tsx": "^4.19.0",
     "uuid": "^13.0.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.53.0",
-    "@typescript-eslint/parser": "^8.53.0",
-    "drizzle-kit": "^0.31.10"
+    "@typescript-eslint/parser": "^8.53.0"
   }
 }
