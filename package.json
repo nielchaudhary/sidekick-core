@@ -12,7 +12,12 @@
     "dev:prod": "pnpm run build && NODE_ENV=production DEBUG=sidekick-core* tsx src/app.ts",
     "dev": "pnpm run build && NODE_ENV=development DEBUG=sidekick-core* nodemon --watch 'src/**/*.ts' --exec 'tsx' src/app.ts",
     "lint:check": "eslint .",
-    "madge:check-build": "madge --circular --extensions ts src/"
+    "madge:check-build": "madge --circular --extensions ts src/",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:drop": "drizzle-kit drop"
   },
   "keywords": [],
   "author": "",
@@ -51,6 +56,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.53.0",
-    "@typescript-eslint/parser": "^8.53.0"
+    "@typescript-eslint/parser": "^8.53.0",
+    "drizzle-kit": "^0.31.10"
   }
 }
