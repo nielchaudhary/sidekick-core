@@ -4,7 +4,7 @@ import { wrapSidekickError } from '../../../config/core/exceptions.ts';
 import { waitlistRequestSchema, type IWaitlistDetails } from '../types.ts';
 import { getMongoDBColl, WAITLIST_COLLECTION } from '../../../config/database/mongoDB.ts';
 import { generateUserId } from '../../../config/core/predicates.ts';
-import { sendSidekickWaitlistMail } from '../../mailer/config.ts';
+import { sendSidekickWaitlistMail } from '../../mailer/waitlist-email.ts';
 
 const logger = new Logger('addUserToWaitlistPostHandler');
 
