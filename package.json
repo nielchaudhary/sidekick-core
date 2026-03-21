@@ -33,7 +33,6 @@
     "cors": "^2.8.6",
     "debug": "^4.4.3",
     "dotenv": "^17.2.3",
-    "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.1",
     "eslint": "^9.39.2",
     "express": "^5.2.1",
@@ -52,6 +51,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.53.0",
-    "@typescript-eslint/parser": "^8.53.0"
+    "@typescript-eslint/parser": "^8.53.0",
+    "drizzle-kit": "^0.31.10"
   }
 }
