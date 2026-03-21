@@ -279,13 +279,13 @@ pnpm install
 
 **Database (Drizzle ORM)**
 
-| Script              | When to use                                                  |
-| ------------------- | ------------------------------------------------------------ |
-| `npm run db:generate` | After editing schema files — creates migration SQL files     |
-| `npm run db:push`     | Dev only — pushes schema directly to DB, no migration files  |
-| `npm run db:migrate`  | Production — runs pending migration files in order           |
-| `npm run db:studio`   | Opens browser GUI to browse tables and data                  |
-| `npm run db:drop`     | Deletes a migration file if you generated one by mistake     |
+| Script                | When to use                                                 |
+| --------------------- | ----------------------------------------------------------- |
+| `npm run db:generate` | After editing schema files — creates migration SQL files    |
+| `npm run db:push`     | Dev only — pushes schema directly to DB, no migration files |
+| `npm run db:migrate`  | Production — runs pending migration files in order          |
+| `npm run db:studio`   | Opens browser GUI to browse tables and data                 |
+| `npm run db:drop`     | Deletes a migration file if you generated one by mistake    |
 
 **Start development server** (hot reload, port 8090)
 
