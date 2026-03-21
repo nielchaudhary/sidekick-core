@@ -1,36 +1,38 @@
-import nodemailer from 'nodemailer';
-import { sidekickWaitlistMailHtml } from './sidekickWaitlistMail.ts';
+import { Resend } from 'resend';
 import { Logger } from '../../config/core/logger.ts';
 import { SidekickCoreEnv } from '../../config/core/env.ts';
+import { getErrorDetails, SidekickPlatformError } from '../../config/core/exceptions.ts';
 
 const logger = new Logger('mailer/config');
 
-let transport: nodemailer.Transporter | null = null;
+let resend: Resend | null = null;
 
-const getTransport = (): nodemailer.Transporter => {
-  if (!transport) {
-    const host = SidekickCoreEnv.get('SMTP_HOSTNAME');
-    const port = Number(SidekickCoreEnv.get('SMTP_PORT'));
-
-    transport = nodemailer.createTransport({
-      host,
-      port,
-      secure: port === 465,
-      auth: { user: SidekickCoreEnv.get('SMTP_USERNAME'), pass: SidekickCoreEnv.get('SMTP_PASSWORD') },
-    });
+const getResend = (): Resend => {
+  if (!resend) {
+    resend = new Resend(SidekickCoreEnv.get('RESEND_API_KEY'));
   }
-  return transport;
+  return resend;
 };
 
 export const sendSidekickWaitlistMail = async (email: string): Promise<void> => {
-  const sender = SidekickCoreEnv.get('SMTP_FROM_ADDRESS');
+  const sender = SidekickCoreEnv.get('RESEND_SENDER_EMAIL');
 
-  await getTransport().sendMail({
-    from: sender,
-    to: email,
-    subject: "You're on the Sidekick Waitlist!",
-    html: sidekickWaitlistMailHtml,
-  });
+  try {
+    const { data, error } = await getResend().emails.send({
+      from: `Neel from Sidekick <${sender}>`,
+      to: email,
+      subject: "You're on the Sidekick Waitlist!",
+      template: { id: 'waitlist' },
+    });
 
-  logger.info('Waitlist email sent successfully');
+    if (error) {
+      logger.error('Resend API error:', error);
+      throw SidekickPlatformError.internal('Failed to send waitlist email');
+    }
+
+    logger.info(`Waitlist email sent successfully (id: ${data?.id})`);
+  } catch (err) {
+    logger.error('Failed to send waitlist email:', getErrorDetails(err));
+    throw err instanceof SidekickPlatformError ? err : SidekickPlatformError.internal('Failed to send waitlist email');
+  }
 };
