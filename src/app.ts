@@ -1,5 +1,5 @@
 import express from 'express';
-import { Logger } from './config/core/logger.ts';
+import { commitPeriodicAxiomFlush, flushToAxiom, Logger } from './config/core/logger.ts';
 import { SidekickCoreEnv } from './config/core/env.ts';
 import { initMongoDB, closeMongoDB } from './config/database/mongoDB.ts';
 import { closeCache, initCache } from './config/database/redis.ts';
@@ -19,6 +19,7 @@ const startSidekickPlatformServer = async (): Promise<void> => {
   await initMongoDB();
   await initSupabaseDB();
   await initCache();
+  commitPeriodicAxiomFlush();
 
   const sidekickPlatformServer = express();
 
@@ -45,9 +46,14 @@ const gracefulShutdown = async (signal: string): Promise<void> => {
   try {
     await Promise.all([closeMongoDB(), closeCache(), closeSupabaseDB()]);
     logger.info('Cleanup completed');
+
+    // Flush any remaining logs to Axiom before exiting
+    await flushToAxiom();
+
     process.exit(0);
   } catch (error) {
     logger.error('Shutdown error:', getErrorDetails(error));
+    await flushToAxiom(); // still try to flush the error log
     process.exit(1);
   }
 };

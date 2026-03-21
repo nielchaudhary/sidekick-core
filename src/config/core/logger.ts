@@ -1,5 +1,7 @@
 import Debug from 'debug';
 import { Axiom } from '@axiomhq/js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const globalContext = 'sidekick-core';
 
@@ -11,17 +13,15 @@ export enum LoggingLevel {
   DEBUG = 'DEBUG',
 }
 
-//axiom batching layer
-const axiom = process.env.AXIOM_TOKEN ? new Axiom({ token: process.env.AXIOM_TOKEN }) : null;
-
-const AXIOM_DATASET = process.env.AXIOM_DATASET || 'sidekick-logs';
+const axiom = new Axiom({ token: process.env.AXIOM_TOKEN! });
+const AXIOM_DATASET = process.env.AXIOM_DATASET!;
 const FLUSH_INTERVAL_MS = 5000;
 const FLUSH_BATCH_SIZE = 100;
 
 let buffer: Record<string, unknown>[] = [];
 
-const flushToAxiom = async (): Promise<void> => {
-  if (!axiom || buffer.length === 0) {
+export const flushToAxiom = async (): Promise<void> => {
+  if (buffer.length === 0) {
     return;
   }
   const batch = buffer.splice(0, buffer.length);
@@ -38,30 +38,17 @@ const flushToAxiom = async (): Promise<void> => {
 };
 
 // Periodic flush
-const flushTimer = setInterval(flushToAxiom, FLUSH_INTERVAL_MS);
-flushTimer.unref(); // don't keep the process alive just for logging
-
-const shutdownFlush = async () => {
-  await flushToAxiom();
+export const commitPeriodicAxiomFlush = () => {
+  const flushTimer = setInterval(flushToAxiom, FLUSH_INTERVAL_MS);
+  flushTimer.unref(); // don't keep the process alive just for logging
 };
-process.on('beforeExit', shutdownFlush);
-process.on('SIGTERM', async () => {
-  await shutdownFlush();
-  process.exit(0);
-});
-process.on('SIGINT', async () => {
-  await shutdownFlush();
-  process.exit(0);
-});
 
 const queueAxiomLog = (level: LoggingLevel, context: string, message: unknown, args: unknown[]): void => {
-  if (!axiom) {
-    return;
-  }
   buffer.push({
     _time: new Date().toISOString(),
     level,
     context,
+    environment: Logger.environment,
     message: typeof message === 'string' ? message : JSON.stringify(message),
     args: args.length > 0 ? args : undefined,
     service: globalContext,
@@ -74,6 +61,8 @@ const queueAxiomLog = (level: LoggingLevel, context: string, message: unknown, a
 
 export class Logger {
   public static loggers: { [key: string]: Logger } = {};
+
+  public static environment: string = process.env.NODE_ENV || 'development';
 
   private logInfo: Debug.IDebugger;
   private logError: Debug.IDebugger;
