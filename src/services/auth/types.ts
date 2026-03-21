@@ -30,7 +30,7 @@ export interface ISidekickUser {
   subscription: {
     tier: SubscriptionTier;
     status: SubscriptionStatus;
-    stripeCustomerId?: string;
+    paymentProvider: string; //dodo would be the default for now
     currentPeriodEnd?: Date;
   };
   ctime: Date;
