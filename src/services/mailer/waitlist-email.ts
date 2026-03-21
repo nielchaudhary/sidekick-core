@@ -8,6 +8,8 @@ const logger = new Logger('mailer/waitlist-email');
 export const sendSidekickWaitlistMail = async (email: string): Promise<void> => {
   const sender = SidekickCoreEnv.get('RESEND_SENDER_EMAIL');
 
+  logger.info(`Sending waitlist email to ${email}`);
+
   try {
     const { data, error } = await getResend().emails.send({
       from: `Neel from Sidekick <${sender}>`,
