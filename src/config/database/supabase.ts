@@ -4,19 +4,17 @@ import { Logger } from '../core/logger.ts';
 import { isNullOrUndefined } from '../core/predicates.ts';
 import { getErrorDetails, SidekickPlatformError } from '../core/exceptions.ts';
 import { SidekickCoreEnv } from '../core/env.ts';
-
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import * as schema from './schema/index.ts';
 
 const logger = new Logger('supabase');
-const databaseUrl = SidekickCoreEnv.get('SUPABASE_DB_URL');
+
+type DrizzleDB = PostgresJsDatabase<typeof schema>;
 
 class SupabaseDB {
   private static _client: postgres.Sql | null = null;
-  private static _db: PostgresJsDatabase | null = null;
+  private static _db: DrizzleDB | null = null;
 
-  public static get db(): PostgresJsDatabase {
+  public static get db(): DrizzleDB {
     if (!SupabaseDB._db) {
       throw SidekickPlatformError.database('DB not initialised. Call initDB() first.');
     }
@@ -28,23 +26,24 @@ class SupabaseDB {
   }
 
   public static async init(): Promise<void> {
+    const databaseUrl = SidekickCoreEnv.get('SUPABASE_DB_URL');
+
     if (isNullOrUndefined(databaseUrl)) {
-      throw SidekickPlatformError.database('databaseUrl is not defined in environment variables');
+      throw SidekickPlatformError.database('SUPABASE_DB_URL is not defined in environment variables');
     }
 
     try {
       logger.info('Connecting to Supabase via Drizzle...');
 
       SupabaseDB._client = postgres(databaseUrl, {
-        max: 10, // connection pool size - pool size = CPU cores × 2 + disk spindles
-        idle_timeout: 20, // seconds before idle connections close
-        prepare: false, // required for Supabase connection pooler (transaction mode)
+        max: 10,
+        idle_timeout: 20,
+        prepare: false,
         ssl: 'require',
       });
 
-      SupabaseDB._db = drizzle(SupabaseDB._client);
+      SupabaseDB._db = drizzle(SupabaseDB._client, { schema });
 
-      // Verify connection
       await SupabaseDB._db.execute('SELECT 1');
 
       logger.info('Sidekick SupabaseDB Connection Initialised');
@@ -82,16 +81,6 @@ export const closeSupabaseDB = async (): Promise<void> => {
   }
 };
 
-/**
- * Returns the Drizzle DB instance.
- *
- * Usage:
- *   const db = await getSupabaseDB();
- *   const allUsers = await SupabaseDB.select().from(users);
- */
-export const getSupabaseDB = async (): Promise<PostgresJsDatabase> => {
-  if (!SupabaseDB.initialized) {
-    await initSupabaseDB();
-  }
+export const getSupabaseDB = (): DrizzleDB => {
   return SupabaseDB.db;
 };
