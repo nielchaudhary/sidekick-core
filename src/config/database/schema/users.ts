@@ -26,5 +26,5 @@ export const users = pgTable('users', {
   mtime: timestamp('mtime').defaultNow().notNull(),
 });
 
-export type fetchSidekickUser = InferSelectModel<typeof users>;
-export type createSidekickUser = InferInsertModel<typeof users>;
+export type fetchSidekickUser = InferSelectModel<typeof users>; //fetch
+export type createSidekickUser = InferInsertModel<typeof users>; //insert
