@@ -123,16 +123,6 @@ export const cache = {
     }
   },
 
-  async incr(key: string): Promise<number> {
-    const client = await getCache();
-    try {
-      return await client.incr(key);
-    } catch (error) {
-      logger.error(`Cache incr failed for key ${key}: `, getErrorDetails(error));
-      throw SidekickPlatformError.cache(`Failed to increment key: ${key}`);
-    }
-  },
-
   async ttl(key: string): Promise<number> {
     const client = await getCache();
     try {
@@ -171,37 +161,6 @@ export const cache = {
     } catch (error) {
       logger.error(`Cache hdel failed for ${key}: `, getErrorDetails(error));
       throw SidekickPlatformError.cache(`Failed to hdel: ${key}`);
-    }
-  },
-
-  // List operations for queues, use later
-  async lpush<T = unknown>(key: string, ...values: T[]): Promise<number> {
-    const client = await getCache();
-    try {
-      return await client.lpush(key, ...values);
-    } catch (error) {
-      logger.error(`Cache lpush failed for ${key}: `, getErrorDetails(error));
-      throw SidekickPlatformError.cache(`Failed to lpush: ${key}`);
-    }
-  },
-
-  async rpop<T = unknown>(key: string): Promise<T | null> {
-    const client = await getCache();
-    try {
-      return await client.rpop<T>(key);
-    } catch (error) {
-      logger.error(`Cache rpop failed for ${key}: `, getErrorDetails(error));
-      throw SidekickPlatformError.cache(`Failed to rpop: ${key}`);
-    }
-  },
-
-  async lrange<T = unknown>(key: string, start: number, stop: number): Promise<T[]> {
-    const client = await getCache();
-    try {
-      return await client.lrange<T>(key, start, stop);
-    } catch (error) {
-      logger.error(`Cache lrange failed for ${key}: `, getErrorDetails(error));
-      throw SidekickPlatformError.cache(`Failed to lrange: ${key}`);
     }
   },
 };

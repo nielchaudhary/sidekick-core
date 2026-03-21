@@ -7,7 +7,7 @@ import { SidekickPlatformError, getErrorDetails } from './config/core/exceptions
 import { waitlistRouter } from './services/waitlist/waitlistRouterV1.ts';
 import { chatRouterV1 } from './services/chat/chatRouterV1.ts';
 import cors from 'cors';
-import { closeSupabaseDB, initSupabaseDB } from './config/database/supabase.ts';
+import { closeSupabaseDB, getSupabaseDB, initSupabaseDB } from './config/database/supabase.ts';
 
 const logger = new Logger('server');
 const PORT = SidekickCoreEnv.get('PORT') || 8090;

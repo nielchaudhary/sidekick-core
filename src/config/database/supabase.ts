@@ -35,11 +35,11 @@ class SupabaseDB {
     try {
       logger.info('Connecting to Supabase via Drizzle...');
 
-      SupabaseDB._client = postgres(databaseUrl!, {
-        max: 10, // connection pool size
+      SupabaseDB._client = postgres(databaseUrl, {
+        max: 10, // connection pool size - pool size = CPU cores × 2 + disk spindles
         idle_timeout: 20, // seconds before idle connections close
         prepare: false, // required for Supabase connection pooler (transaction mode)
-        ssl: 'require', //enforces SSL on all external connections.
+        ssl: 'require',
       });
 
       SupabaseDB._db = drizzle(SupabaseDB._client);
