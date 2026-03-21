@@ -1,26 +1,25 @@
 export enum IntegrationProvider {
-  GOOGLE = 'GOOGLE',
-  SLACK = 'SLACK',
-  NOTION = 'NOTION',
+  GOOGLE = 'google',
+  SLACK = 'slack',
+  NOTION = 'notion',
 }
 
 export enum IntegrationStatus {
-  ACTIVE = 'ACTIVE',
-  PAUSED = 'PAUSED',
-  REVOKED = 'REVOKED',
-  ERROR = 'ERROR',
+  ACTIVE = 'active',
+  PAUSED = 'paused',
+  REVOKED = 'revoked',
 }
 
 export enum SubscriptionTier {
-  FREE = 'FREE',
-  PRO = 'PRO',
-  MAX = 'MAX',
+  FREE = 'free',
+  PRO = 'pro',
+  MAX = 'max',
 }
 
 export enum SubscriptionStatus {
-  ACTIVE = 'ACTIVE',
-  CANCELED = 'CANCELED',
-  TRIAL = 'TRIAL',
+  ACTIVE = 'active',
+  CANCELED = 'canceled',
+  TRIAL = 'trial',
 }
 
 export interface ISidekickUser {
